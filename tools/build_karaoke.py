@@ -28,7 +28,8 @@ ap.add_argument("--out", required=True)
 ap.add_argument("--site", required=True)
 ap.add_argument("--clip", nargs=2, type=float, default=[560.0, 592.9])
 ap.add_argument("--clip-name", default="LT2401_sample_0920")
-ap.add_argument("--reseg", help="샘플을 문장 단위로 다시 나눈 파일 (줄.토막-줄.토막|번역). 주면 --clip 대신 이 범위로 자른다")
+ap.add_argument("--reseg", help="문장 단위로 다시 나눈 파일 (줄.토막-줄.토막|번역, '## 제목' 줄은 목차). 주면 --clip 대신 이 범위로 자른다")
+ap.add_argument("--bitrate", default="64k", help="잘라 낸 mp3 비트레이트 (모노)")
 a = ap.parse_args()
 
 
@@ -233,12 +234,16 @@ def write_vtt(path, items, extra):
 write_vtt(a.out, [(c["n"], *payload(c)) for c in cues],
           "독음·번역이 있는 줄만 노래방으로 나오고, 나머지는 태국어 원문만 있습니다.\n")
 def resegment(path):
-    """휘스퍼 줄을 넘나들며 태국어 토막 단위로 문장을 다시 묶는다 (번역이 1~2줄이 되게)."""
-    segs = []
+    """휘스퍼 줄을 넘나들며 태국어 토막 단위로 문장을 다시 묶는다 (번역이 1~2줄이 되게).
+    '## 제목' 줄은 다음 문장에서 시작하는 목차 항목이다."""
+    segs, chapters = [], []
     with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.rstrip("\n")
             if not line.strip():
+                continue
+            if line.startswith("## "):
+                chapters.append((len(segs), line[3:].strip()))
                 continue
             rng, tr = line.split("|", 1)
             (l0, i0), (l1, i1) = [tuple(map(int, p.split("."))) for p in rng.split("-")]
@@ -249,27 +254,37 @@ def resegment(path):
                 words += c["words"][lo:hi + 1]
                 st += c["st"][lo:hi + 1]
                 en += c["en"][lo:hi + 1]
-            segs.append(dict(n=len(segs) + 1, words=words, st=st, en=en, tr=tr.strip()))
+            segs.append(dict(n=len(segs) + 1, rng=rng, words=words, st=st, en=en, tr=tr.strip()))
     for i, s in enumerate(segs):
         s["s"] = max(s["st"][0] - 0.12, segs[i - 1]["en"][-1] if i else 0.0)
     for i, s in enumerate(segs):
         s["e"] = min(s["en"][-1] + 0.5, segs[i + 1]["s"]) if i + 1 < len(segs) else s["en"][-1] + 0.6
-    return segs
+    return segs, chapters
 
 
 media = os.path.join(a.site, "media")
 os.makedirs(media, exist_ok=True)
 if a.reseg:
-    segs = resegment(a.reseg)
+    segs, chapters = resegment(a.reseg)
     c0, c1 = min(a.clip[0], segs[0]["s"] - 0.2), segs[-1]["e"] + 0.3
     clip = [(s["n"], *payload(s, c0, c1 - c0)) for s in segs]
+    side = dict(source=os.path.basename(a.mp3), start=round(c0, 3), end=round(c1, 3),
+                chapters=[dict(t=round(max(0.0, segs[i]["s"] - c0), 2), title=t) for i, t in chapters],
+                cues=[dict(n=s["n"], rng=s["rng"], s=round(s["s"] - c0, 3), e=round(s["e"] - c0, 3),
+                           speech=[round(s["st"][0] - c0, 3), round(s["en"][-1] - c0, 3)], tr=clean_tr(s["tr"]))
+                      for s in segs])
+    with open(os.path.join(media, a.clip_name + ".json"), "w", encoding="utf-8") as f:
+        json.dump(side, f, ensure_ascii=False, indent=1)
+    for i, t in chapters:
+        x = segs[i]["s"] - c0
+        print(f"목차 {int(x // 60)}:{int(x % 60):02d}  {t}")
 else:
     c0, c1 = a.clip
     clip = [(c["n"], *payload(c, c0, c1 - c0)) for c in cues if c["s"] < c1 - 0.3 and c["e"] > c0 + 0.3]
 write_vtt(os.path.join(media, a.clip_name + ".vtt"), clip,
-          f"샘플: 원본 {fmt(c0)} ~ {fmt(c1)} 구간 (시각은 샘플 기준 0초부터).\n")
+          f"잘라 낸 구간: 원본 {fmt(c0)} ~ {fmt(c1)} (시각은 잘라 낸 음성 기준 0초부터).\n")
 subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", str(c0), "-i", a.mp3, "-t", f"{c1 - c0:.3f}", "-ac", "1",
-                "-c:a", "libmp3lame", "-b:a", "96k", os.path.join(media, a.clip_name + ".mp3")], check=True)
+                "-c:a", "libmp3lame", "-b:a", a.bitrate, os.path.join(media, a.clip_name + ".mp3")], check=True)
 print("clip cues:", [n for n, *_ in clip])
 for n in (1, 102):
     c = cues[n - 1]

@@ -41,7 +41,7 @@ body{{margin:0;width:1200px;height:1200px;background:#0f1412;color:#f2eee4;font-
 <p class="thai">{t.get("thaiTitle", "")}</p>
 <div class="rule"></div>
 <p class="who">{t["speaker"]} · 당시 {t["age"]}</p>
-<p class="when">{t["date"]}<br>{t["audience"]}</p>
+<p class="when">{t["date"]}{" · " + t["length"] if t.get("length") else ""}<br>{t["audience"]}</p>
 </div>
 <img class="pf" src="data:image/jpeg;base64,{pf}" alt="">
 <div class="foot"><span>숲속 수행승 법문 듣기</span><span>태국어 원문 · 한글 독음 · 한국어 번역</span></div>

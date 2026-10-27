@@ -7,13 +7,13 @@
 <meta name="theme-color" content="#f3f4ef" media="(prefers-color-scheme: light)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="숲속 법문 듣기">
-<meta name="description" content="아잔 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
+<meta name="description" content="아잔 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 21분 법문 전체를 태국어 원문, 한글 독음, 한국어 번역과 함께 듣기">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="숲속 수행승 법문 듣기">
 <meta property="og:title" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 아잔 마하부와 · 03-10-11">
-<meta property="og:description" content="아잔 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
+<meta property="og:description" content="아잔 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 21분 법문 전체를 태국어 원문, 한글 독음, 한국어 번역과 함께 듣기">
 <meta property="og:url" content="https://tipitaka1.github.io/thai-srt-work/">
-<meta property="og:image" content="https://tipitaka1.github.io/thai-srt-work/og/lt2401-0920-card3.png">
+<meta property="og:image" content="https://tipitaka1.github.io/thai-srt-work/og/lt2401-card.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
@@ -24,6 +24,7 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
 <title>모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 아잔 마하부와 · 03-10-11</title>
+<script>try{var tsw=JSON.parse(localStorage.getItem("tsw3.theme"));if(tsw==="light"||tsw==="dark")document.documentElement.dataset.theme=tsw}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,11 +85,15 @@ select{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border
 .no-tr .tr{display:none}
 @media (hover:hover){.cue:hover{opacity:.9}.cue.on:hover{opacity:1}}
 
-.sheet{border-top:1px solid var(--line);background:var(--panel);padding-block:6px 4px;display:grid}
-.sheet .row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
-.sheet .row > span{font-size:14px}
-.step{display:flex;align-items:center;gap:6px}
-.step output{min-width:3.6em;text-align:center;font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums}
+/* 보기 창: 세 줄 (글자·줄 간격 / 보이기 칩 / 화면 밝기·더빙) */
+.sheet{border-top:1px solid var(--line);background:var(--panel);padding-block:8px 8px;display:grid;gap:7px}
+.srow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px 12px}
+.grp{display:flex;align-items:center;gap:7px}
+.lb{font-size:12.5px;color:var(--soft);white-space:nowrap}
+.step{display:flex;align-items:center;gap:3px}
+.step output{min-width:2.9em;text-align:center;font-size:13px;color:var(--fg);font-variant-numeric:tabular-nums}
+.chips{justify-content:flex-start;gap:6px}
+.seg{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--chip)}
 
 .bar{border-top:1px solid var(--line);background:var(--bg);padding-block:8px 10px;display:flex;flex-direction:column;gap:6px}
 .row1{display:flex;align-items:center;gap:10px}
@@ -103,9 +108,23 @@ button.play{width:50px;height:50px;padding:0;border:0;background:var(--ochre);co
 button.play svg{width:24px;height:24px}
 button.round{padding:0;width:38px}
 button.ghost{background:transparent;border-color:transparent;color:var(--soft)}
-button.sw{min-width:4.2em}
-button.sw[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);color:var(--panel)}
-button.sw[aria-pressed="false"]{background:transparent;color:var(--soft)}
+button.sm{width:32px;min-width:32px;height:32px;padding:0}
+button.chip,button.sw{height:32px;min-width:0;padding:0 12px;font-size:13px}
+button.sw{min-width:3.4em}
+button.chip[aria-pressed="true"],button.sw[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);color:var(--panel)}
+button.chip[aria-pressed="false"],button.sw[aria-pressed="false"]{background:transparent;color:var(--soft)}
+.seg button{height:28px;min-width:0;padding:0 9px;border:0;background:transparent;color:var(--soft);font-size:12.5px}
+.seg button[aria-checked="true"]{background:var(--fg);color:var(--bg)}
+/* 차례: 목록 맨 위, 누르면 그 자리부터 */
+.toc{margin:2px 0 12px;padding:8px 12px 4px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.toc h2{margin:0 0 2px;font-size:12px;font-weight:700;color:var(--soft);letter-spacing:.06em}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li+li{border-top:1px solid var(--line)}
+.toc button{all:unset;box-sizing:border-box;display:flex;align-items:baseline;gap:10px;width:100%;padding:8px 2px;cursor:pointer;font:calc(var(--fs) * .9)/1.4 var(--f-kr);color:var(--fg)}
+.toc button:focus-visible{outline:2px solid var(--jade);outline-offset:1px;border-radius:6px}
+.toc .tt{flex:none;min-width:2.8em;font-size:.86em;font-weight:600;color:var(--ochre);font-variant-numeric:tabular-nums}
+.toc .tl{flex:1;min-width:0;word-break:keep-all;overflow-wrap:anywhere}
+.toc li.on .tl{color:var(--tr-on);font-weight:600}
 button[aria-expanded="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.cue,.tr{transition:none}}
@@ -120,19 +139,26 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
       <p class="by" id="by"></p>
     </div>
     <select id="talkSel" aria-label="법문 고르기" hidden></select>
+    <button class="round ghost" id="bToc" type="button" aria-label="차례 보기" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h2v2H4zm4 0h12v2H8zM4 11h2v2H4zm4 0h12v2H8zm-4 4.5h2v2H4zm4 0h12v2H8z"/></svg></button>
     <button class="round ghost" id="bShare" type="button" aria-label="공유하기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 0 0 21 5a3 3 0 1 0-5.91.7L8.04 9.81A2.99 2.99 0 0 0 3 12a3 3 0 0 0 5.04 2.19l7.12 4.16c-.05.21-.08.43-.08.65A2.92 2.92 0 1 0 18 16.08z"/></svg></button>
   </header>
   <p class="stat gut" id="stat" role="status" hidden></p>
   <main class="list gut" id="list"></main>
   <section class="sheet gut" id="sheet" hidden>
-    <div class="row"><span>글자 크기</span>
-      <div class="step"><button class="round" id="fsDn" type="button" aria-label="글자 작게">−</button><output id="fsVal">16</output><button class="round" id="fsUp" type="button" aria-label="글자 크게">+</button></div></div>
-    <div class="row"><span>줄 간격</span>
-      <div class="step"><button class="round" id="lhDn" type="button" aria-label="줄 간격 좁게">−</button><output id="lhVal">100%</output><button class="round" id="lhUp" type="button" aria-label="줄 간격 넓게">+</button></div></div>
-    <div class="row"><span>노래방 표시</span><button class="sw" id="bKara" type="button" aria-pressed="false">끔</button></div>
-    <div class="row"><span>태국어 원문</span><button class="sw" id="bTh" type="button" aria-pressed="true">보임</button></div>
-    <div class="row"><span>한글 독음</span><button class="sw" id="bKo" type="button" aria-pressed="true">보임</button></div>
-    <div class="row"><span>한국어 번역</span><button class="sw" id="bTr" type="button" aria-pressed="true">보임</button></div>
+    <div class="srow">
+      <div class="grp"><span class="lb">글자</span><div class="step"><button class="round sm" id="fsDn" type="button" aria-label="글자 작게">−</button><output id="fsVal">16</output><button class="round sm" id="fsUp" type="button" aria-label="글자 크게">+</button></div></div>
+      <div class="grp"><span class="lb">줄 간격</span><div class="step"><button class="round sm" id="lhDn" type="button" aria-label="줄 간격 좁게">−</button><output id="lhVal">100%</output><button class="round sm" id="lhUp" type="button" aria-label="줄 간격 넓게">+</button></div></div>
+    </div>
+    <div class="srow chips" role="group" aria-label="보이기">
+      <button class="chip" id="bTh" type="button" aria-pressed="true">태국어</button>
+      <button class="chip" id="bKo" type="button" aria-pressed="true">독음</button>
+      <button class="chip" id="bTr" type="button" aria-pressed="true">번역</button>
+      <button class="chip" id="bKara" type="button" aria-pressed="false">노래방</button>
+    </div>
+    <div class="srow">
+      <div class="grp"><span class="lb">화면</span><div class="seg" id="theme" role="radiogroup" aria-label="화면 밝기"><button type="button" role="radio" data-v="auto">자동</button><button type="button" role="radio" data-v="light">밝게</button><button type="button" role="radio" data-v="dark">어둡게</button></div></div>
+      <div class="grp" id="dubGrp" hidden><span class="lb">한국어 더빙</span><button class="sw" id="bDub" type="button" aria-pressed="false">끔</button></div>
+    </div>
   </section>
   <footer class="bar gut">
     <div class="row1">
@@ -157,7 +183,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 const $ = s => document.querySelector(s);
 const au = $('#au'), list = $('#list'), seek = $('#seek'), stat = $('#stat');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let cues = [], els = [], cur = -1, raf = 0, userScrollAt = 0, dragging = false, talks = [], talk = null, toastTimer = 0;
+let cues = [], els = [], cur = -1, raf = 0, userScrollAt = 0, dragging = false, talks = [], talk = null, toastTimer = 0, tocEls = [], curCh = -1;
 
 const store = {
   get(k, d) { try { const v = localStorage.getItem('tsw3.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -166,7 +192,9 @@ const store = {
 const SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26];
 const SPACES = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.35, 1.5];
 const RATES = [0.75, 1, 1.25, 1.5];
-const prefs = { kara: store.get('kara', false), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1) };
+const THEMES = ['auto', 'light', 'dark'];
+const prefs = { kara: store.get('kara', false), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1), theme: store.get('theme', 'auto'), dub: store.get('dub', false) };
+if (!THEMES.includes(prefs.theme)) prefs.theme = 'auto';
 if (!SIZES.includes(prefs.fs)) prefs.fs = 16;
 if (!SPACES.includes(prefs.lh)) prefs.lh = 1;
 if (!RATES.includes(prefs.rate)) prefs.rate = 1;
@@ -181,10 +209,22 @@ function applyPrefs() {
   $('#lhVal').textContent = Math.round(prefs.lh * 100) + '%';
   $('#fsDn').disabled = prefs.fs === SIZES[0]; $('#fsUp').disabled = prefs.fs === SIZES[SIZES.length - 1];
   $('#lhDn').disabled = prefs.lh === SPACES[0]; $('#lhUp').disabled = prefs.lh === SPACES[SPACES.length - 1];
-  for (const [id, on] of [['#bTh', prefs.th], ['#bKo', prefs.ko], ['#bTr', prefs.tr]]) { $(id).setAttribute('aria-pressed', String(on)); $(id).textContent = on ? '보임' : '숨김'; }
-  $('#bKara').setAttribute('aria-pressed', String(prefs.kara)); $('#bKara').textContent = prefs.kara ? '켬' : '끔';
+  for (const [id, on] of [['#bTh', prefs.th], ['#bKo', prefs.ko], ['#bTr', prefs.tr], ['#bKara', prefs.kara]]) $(id).setAttribute('aria-pressed', String(on));
+  $('#bDub').setAttribute('aria-pressed', String(prefs.dub)); $('#bDub').textContent = prefs.dub ? '켬' : '끔';
+  applyTheme();
   au.playbackRate = prefs.rate;
   $('#bRate').textContent = prefs.rate.toFixed(2).replace(/0$/, '') + '×';
+}
+/* 화면 밝기: 자동이면 폰 설정을 따르고, 밝게·어둡게는 고정 */
+const darkMQ = matchMedia('(prefers-color-scheme: dark)');
+function applyTheme() {
+  const el = document.documentElement;
+  if (prefs.theme === 'auto') el.removeAttribute('data-theme'); else el.dataset.theme = prefs.theme;
+  for (const m of document.querySelectorAll('meta[name="theme-color"]')) {
+    const own = /dark/.test(m.media || '') ? '#0f1412' : '#f3f4ef';
+    m.content = prefs.theme === 'auto' ? own : prefs.theme === 'dark' ? '#0f1412' : '#f3f4ef';
+  }
+  for (const b of document.querySelectorAll('#theme button')) b.setAttribute('aria-checked', String(b.dataset.v === prefs.theme));
 }
 function step(key, arr, d) {
   const n = Math.min(arr.length - 1, Math.max(0, arr.indexOf(prefs[key]) + d));
@@ -243,8 +283,25 @@ function parseVTT(txt) {
 
 /* ---------- 화면 ---------- */
 function node(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+function renderToc() {
+  const ch = (talk && talk.chapters) || [];
+  tocEls = []; curCh = -1;
+  $('#bToc').hidden = !ch.length;
+  if (!ch.length) return;
+  const nav = node('nav', 'toc'); nav.setAttribute('aria-label', '차례');
+  const ol = node('ol');
+  ch.forEach(c => {
+    const li = node('li'), b = node('button');
+    b.type = 'button'; b.dataset.t = c.t;
+    b.append(node('span', 'tt', mmss(c.t)), node('span', 'tl', c.title));
+    li.append(b); ol.append(li); tocEls.push(li);
+  });
+  nav.append(node('h2', '', '차례'), ol);
+  list.append(nav);
+}
 function render() {
   list.textContent = '';
+  renderToc();
   els = cues.map((c, i) => {
     const art = node('article', 'cue'); art.dataset.i = i;
     const line = node('p', 'line'); line.lang = 'th';
@@ -294,6 +351,11 @@ function update(force) {
       if (ws[j]._p !== p) { ws[j]._p = p; ws[j].style.setProperty('--p', p); }
     }
   }
+  if (tocEls.length) {
+    const ch = talk.chapters; let k = -1;
+    for (let j = 0; j < ch.length; j++) if (ch[j].t <= t + 0.05) k = j;
+    if (k !== curCh) { if (curCh >= 0) tocEls[curCh].classList.remove('on'); curCh = k; if (k >= 0) tocEls[k].classList.add('on'); }
+  }
   if (!dragging) seek.value = t;
   $('#tNow').textContent = mmss(t);
 }
@@ -317,11 +379,28 @@ async function openTalk(t) {
     cues = parseVTT(await r.text());
     if (!cues.length) throw new Error('empty');
   } catch (e) { say('자막을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); return; }
-  au.src = t.audio; au.load();
+  $('#dubGrp').hidden = !t.dub;
+  au.src = audioSrc(); au.load();
   list.scrollTop = 0; userScrollAt = 0;
   render();
   say('');
   try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title || '', artist: t.speaker || '', album: '숲속 수행승 법문 듣기' }); } catch (e) {}
+}
+function audioSrc() { return prefs.dub && talk && talk.dub ? talk.dub : talk.audio; }
+/* 원음과 더빙을 같은 자리에서 바꿔 튼다 */
+function switchAudio() {
+  if (!talk) return;
+  const t = au.currentTime || 0, playing = !au.paused;
+  const go = () => { au.removeEventListener('loadedmetadata', go); try { au.currentTime = t; } catch (e) {} update(true); if (playing) au.play().catch(() => {}); };
+  au.addEventListener('loadedmetadata', go);
+  au.src = audioSrc(); au.load();
+}
+function jump(t) {
+  if (!au.src) return;
+  au.currentTime = Math.max(0, t + 0.02);
+  userScrollAt = 0;
+  if (au.paused) au.play().catch(() => {});
+  requestAnimationFrame(() => { update(true); follow(true); });
 }
 async function share() {
   if (!talk) return;
@@ -375,12 +454,17 @@ $('#fsUp').addEventListener('click', () => step('fs', SIZES, 1));
 $('#lhDn').addEventListener('click', () => step('lh', SPACES, -1));
 $('#lhUp').addEventListener('click', () => step('lh', SPACES, 1));
 $('#bKara').addEventListener('click', () => { toggle('kara'); update(true); });
+$('#bDub').addEventListener('click', () => { prefs.dub = !prefs.dub; store.set('dub', prefs.dub); applyPrefs(); switchAudio(); toast(prefs.dub ? '한국어 더빙으로 들어요. 태국어 원음은 작게 깔려요.' : '태국어 원음으로 들어요.'); });
+for (const b of document.querySelectorAll('#theme button')) b.addEventListener('click', () => { prefs.theme = b.dataset.v; store.set('theme', prefs.theme); applyTheme(); });
+darkMQ.addEventListener && darkMQ.addEventListener('change', applyTheme);
+$('#bToc').addEventListener('click', () => { userScrollAt = Date.now() + 10000; list.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
 $('#bTh').addEventListener('click', () => toggle('th'));
 $('#bKo').addEventListener('click', () => toggle('ko'));
 $('#bTr').addEventListener('click', () => toggle('tr'));
 seek.addEventListener('input', () => { dragging = true; $('#tNow').textContent = mmss(+seek.value); });
 seek.addEventListener('change', () => { dragging = false; au.currentTime = +seek.value; userScrollAt = 0; });
 list.addEventListener('click', e => {
+  const tb = e.target.closest('.toc button'); if (tb) { jump(+tb.dataset.t); return; }
   const art = e.target.closest('.cue'); if (!art || !au.src) return;
   const c = cues[+art.dataset.i], w = e.target.closest('.w');
   au.currentTime = Math.max(0, (w ? c.words[+w.dataset.j].s : c.start) - 0.05);

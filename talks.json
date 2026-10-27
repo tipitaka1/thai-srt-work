@@ -1,6 +1,6 @@
 [
   {
-    "id": "lt2401-0920",
+    "id": "lt2401",
     "short": "LT2401",
     "title": "모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다",
     "thaiTitle": "กองทุกข์ทั้งหลายมารวมอยู่ที่กามกิเลส",
@@ -9,12 +9,42 @@
     "date": "2003년 10월 11일 저녁",
     "dateShort": "03-10-11",
     "audience": "왓빠반땃 스님들에게",
+    "length": "21분",
     "portrait": "img/luangta_bust.jpg",
     "portraitFull": "img/luangta_portrait.jpg",
-    "audio": "media/LT2401_0920_2min.mp3",
-    "vtt": "media/LT2401_0920_2min.vtt",
-    "card": "og/lt2401-0920-card3.png",
-    "share": "s/lt2401-0920.html",
+    "audio": "media/LT2401_talk.mp3",
+    "vtt": "media/LT2401_talk.vtt",
+    "chapters": [
+      {
+        "t": 0.2,
+        "title": "법과 율보다 큰 것은 없다"
+      },
+      {
+        "t": 242.39,
+        "title": "종이 땡 울리면, 쓴 것이 달아진다"
+      },
+      {
+        "t": 600.17,
+        "title": "가장 센 번뇌, 감각 욕망"
+      },
+      {
+        "t": 759.5,
+        "title": "사마디에 갇힌 5년"
+      },
+      {
+        "t": 942.54,
+        "title": "이것 하나만 끊으면"
+      },
+      {
+        "t": 1210.11,
+        "title": "모든 괴로움 덩어리가 여기 모인다"
+      }
+    ],
+    "card": "og/lt2401-card.png",
+    "share": "s/lt2401.html",
+    "oldShare": [
+      "s/lt2401-0920.html"
+    ],
     "cardTitle": "모든 괴로움 덩어리는\n감각 욕망 번뇌에\n모여 있다"
   }
 ]

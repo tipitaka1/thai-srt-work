@@ -8,7 +8,13 @@ core = open(core_path, encoding="utf-8").read()
 head, body = core.split("<!--HEAD-END-->")
 t = json.load(open(f"{repo}/talks.json", encoding="utf-8"))[0]
 share_title = " · ".join(x for x in (t["title"], t["speaker"], t["dateShort"]) if x)
-desc = f"{t['speaker']}({t['age']}) · {t['date']} · {t['audience']} — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기"
+def describe(t):
+    what = "태국어 원문, 한글 독음, 한국어 번역"   # 더빙 여부로 바꾸지 않는다 (카톡 미리보기가 바뀌지 않게)
+    whole = f"{t['length']} 법문 전체를 " if t.get("length") else ""
+    return f"{t['speaker']}({t['age']}) · {t['date']} · {t['audience']} — {whole}{what}과 함께 듣기"
+
+
+desc = describe(t)
 e = lambda s: html.escape(s, quote=True)
 head = head.replace("<title>숲속 수행승 법문 듣기</title>", f"<title>{e(share_title)}</title>")
 og = f"""<meta name="description" content="{e(desc)}">
@@ -49,11 +55,14 @@ print("index.html ok |", share_title)
 
 # 법문마다 카톡 미리보기 전용 주소: 정적 og 태그 + 앱으로 바로 넘김
 import os
+pages = []
 for t in json.load(open(f"{repo}/talks.json", encoding="utf-8")):
-    if not t.get("share"):
-        continue
+    if t.get("share"):
+        pages.append((t["share"], t))
+        pages += [(old, t) for old in t.get("oldShare", [])]   # 예전 공유 주소도 같은 미리보기로 이 법문에 넘긴다
+for page_path, t in pages:
     st = " · ".join(x for x in (t["title"], t["speaker"], t["dateShort"]) if x)
-    ds = f"{t['speaker']}({t['age']}) · {t['date']} · {t['audience']} — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기"
+    ds = describe(t)
     url, app = BASE + t["share"], f"../?t={t['id']}"
     sp = f"""<!doctype html>
 <html lang="ko">
@@ -83,6 +92,6 @@ for t in json.load(open(f"{repo}/talks.json", encoding="utf-8")):
 </body>
 </html>
 """
-    os.makedirs(os.path.dirname(f"{repo}/{t['share']}"), exist_ok=True)
-    open(f"{repo}/{t['share']}", "w", encoding="utf-8", newline="\n").write(sp)
-    print("share page ok |", t["share"])
+    os.makedirs(os.path.dirname(f"{repo}/{page_path}"), exist_ok=True)
+    open(f"{repo}/{page_path}", "w", encoding="utf-8", newline="\n").write(sp)
+    print("share page ok |", page_path)
