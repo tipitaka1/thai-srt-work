@@ -48,6 +48,33 @@ def esc(s):
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+NOTE_WORDS = ("휘스퍼", "불명", "추정", "깨짐", "누락")
+
+
+def clean_tr(s):
+    """화면용 번역: ※, (?), 휘스퍼 검토 메모 괄호를 뺀다 (원본 pron_ko.txt는 그대로 둔다)."""
+    s = s.replace("※", "").replace("(?)", "")
+    out, i, cut_end = [], 0, False
+    while i < len(s):
+        if s[i] == "(":
+            depth, j = 0, i
+            while j < len(s):
+                depth += {"(": 1, ")": -1}.get(s[j], 0)
+                if depth == 0:
+                    break
+                j += 1
+            if any(k in s[i + 1:j] for k in NOTE_WORDS):
+                cut_end = not s[j + 1:].strip()
+                i = j + 1
+                continue
+        out.append(s[i])
+        i += 1
+    s = " ".join("".join(out).split())
+    if cut_end and s[-1:] in ("요", "다"):
+        s += "."
+    return s
+
+
 def read_map(path, nf):
     m = {}
     with open(path, encoding="utf-8") as f:
@@ -161,7 +188,7 @@ def payload(c, off=0.0, lim=None):
     s0 = max(0.0, c["s"] - off)
     e0 = (c["e"] - off) if lim is None else min(lim, c["e"] - off)
     if "words" not in c:
-        return s0, e0, esc(c["th"])
+        return s0, e0, esc(c["th"].replace("�", ""))
     st = [t - off for t in c["st"]]
     en = [t - off for t in c["en"]]
     last = [s0]
@@ -175,11 +202,13 @@ def payload(c, off=0.0, lim=None):
 
     out = []
     for i, (th, ko) in enumerate(c["words"]):
+        if "�" in th:                      # 휘스퍼가 깨뜨린 글자 토막은 화면에서 뺀다
+            continue
         pre = tag(st[i]) if (i > 0 or st[0] > s0 + 0.05) else ""
         nxt = st[i + 1] if i + 1 < len(st) else e0
         post = tag(en[i]) if nxt - en[i] >= 0.15 else ""
         out.append(f"{pre}<ruby>{esc(th)}<rt>{esc(ko)}</rt></ruby>{post}")
-    return s0, e0, " ".join(out) + f"\n<c.ko>{esc(c['tr'])}</c>"
+    return s0, e0, " ".join(out) + f"\n<c.ko>{esc(clean_tr(c['tr']))}</c>"
 
 
 HEAD = """WEBVTT
@@ -190,7 +219,6 @@ NOTE
 LT2401 (2003-10-11) Luang Ta Maha Bua - Whisper large-v3 Thai
 태국어 단어마다 <ruby>태국어<rt>한글 독음</rt></ruby>, 둘째 줄 <c.ko>는 한국어 번역입니다.
 단어 앞 시각 태그가 노래방 시각입니다. 휘스퍼 단어 시각을 글자 위치로 나누고 앞뒤 무음을 잘라 낸 추정치예요.
-※ = 참고 녹취와 대조해 휘스퍼 인식 오류가 확인된 줄, (?) = 뜻이 불확실한 줄.
 """
 
 

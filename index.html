@@ -15,81 +15,76 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600&family=Gowun+Batang:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600&display=swap">
 <style>
-/* Layout: one-screen reader. Header / scrolling transcript / transport bar.
-   Each word = Hangul reading stacked over the Thai word; the spoken word is wiped in robe ochre. */
+/* Layout: one-screen reader. Title band / scrolling transcript / transport bar (+ view sheet).
+   Each word = Hangul reading stacked over the Thai word; the spoken word fills in robe ochre. */
 :root{
-  --bg:#eef0ea; --panel:#ffffff; --fg:#1c2320; --soft:#4a5550; --dim:#a0a8a3; --line:#d5dad3; --chip:#e2e6de;
-  --ochre:#a35a08; --jade:#0f6f5f; --on-ochre:#ffffff;
-  --f-th:"Sarabun","Leelawadee UI","Thonburi","Noto Sans Thai",Tahoma,sans-serif;
-  --f-ui:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-  --f-tr:"Gowun Batang","Batang","AppleMyungjo","Noto Serif KR",serif;
-  --fs:24px;
+  --bg:#f3f4ef; --panel:#ffffff; --fg:#141916; --soft:#4b5550; --dim:#a4aca7; --line:#d8dcd5; --chip:#e4e8e1;
+  --ochre:#a35a08; --jade:#0e6d5d; --on-ochre:#ffffff;
+  --f-th:"Noto Sans Thai","Noto Sans KR",sans-serif;
+  --f-kr:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --fs:18px; --lh:1.3;
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){--bg:#0f1412;--panel:#18201c;--fg:#ebe7dc;--soft:#c2beb1;--dim:#5c6761;--line:#28312d;--chip:#1e2723;--ochre:#eba443;--jade:#89d4c1;--on-ochre:#14110c;color-scheme:dark}
+  :root:not([data-theme="light"]){--bg:#0f1412;--panel:#19211d;--fg:#f2eee4;--soft:#b8b4a8;--dim:#5b6660;--line:#29322e;--chip:#1f2824;--ochre:#eba443;--jade:#8ad5c2;--on-ochre:#14110c;color-scheme:dark}
 }
-:root[data-theme="dark"]{--bg:#0f1412;--panel:#18201c;--fg:#ebe7dc;--soft:#c2beb1;--dim:#5c6761;--line:#28312d;--chip:#1e2723;--ochre:#eba443;--jade:#89d4c1;--on-ochre:#14110c;color-scheme:dark}
+:root[data-theme="dark"]{--bg:#0f1412;--panel:#19211d;--fg:#f2eee4;--soft:#b8b4a8;--dim:#5b6660;--line:#29322e;--chip:#1f2824;--ochre:#eba443;--jade:#8ad5c2;--on-ochre:#14110c;color-scheme:dark}
 
 html{box-sizing:border-box;height:100%}
 *,*::before,*::after{box-sizing:inherit}
-body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font:14px/1.5 var(--f-ui)}
+body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font:14px/1.5 var(--f-kr)}
 .app{height:100%;display:flex;flex-direction:column}
 .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
-.top{display:flex;align-items:flex-start;gap:12px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:flex-start;gap:10px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
 .top .meta{flex:1;min-width:0}
-.ttl{margin:0;font:700 17px/1.35 var(--f-tr);text-wrap:balance}
-.sub{margin:3px 0 0;font-size:12.5px;color:var(--soft)}
-.legend{margin:4px 0 0;font-size:11.5px;color:var(--dim)}
-.top .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-select{font:600 13px/1 var(--f-ui);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:8px;height:36px;max-width:12rem;padding:0 8px}
-
+.ttl{margin:0;font-weight:700;font-size:16px;line-height:1.4;letter-spacing:-.01em;text-wrap:balance}
+.by{margin:3px 0 0;font-size:12.5px;color:var(--soft)}
+select{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:8px;height:34px;max-width:10rem;padding:0 8px}
 .stat{margin:0;padding-block:8px;font-size:13px;color:var(--ochre);border-bottom:1px solid var(--line)}
 
-.list{flex:1;min-height:0;overflow-y:auto;position:relative;padding-block:14px 42vh;display:flex;flex-direction:column;gap:4px;-webkit-overflow-scrolling:touch}
-.cue{display:grid;grid-template-columns:2.6rem minmax(0,1fr);column-gap:10px;padding:10px 12px 12px;border-radius:12px;opacity:.58;transition:opacity .25s,background-color .25s;cursor:pointer}
+.list{flex:1;min-height:0;overflow-y:auto;position:relative;padding-block:10px 38vh;display:flex;flex-direction:column;gap:calc((var(--lh) - 1) * 10px);-webkit-overflow-scrolling:touch}
+.cue{margin-inline:-10px;padding:calc(var(--lh) * 5px) 10px calc(var(--lh) * 6px);border-radius:10px;opacity:.72;transition:opacity .25s,background-color .25s;cursor:pointer}
 .cue.on{opacity:1;background:var(--panel)}
-.tc{grid-row:1 / span 2;padding-top:.55em;font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
-.line{margin:0;min-width:0;display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:.32em;row-gap:.1em;font-size:var(--fs)}
-.line.plain{display:block;font-family:var(--f-th);line-height:1.6}
+.line{margin:0;display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:.3em;row-gap:calc((var(--lh) - 1) * .5em);font-size:var(--fs)}
+.line.plain{display:block;font-family:var(--f-th);line-height:calc(var(--lh) + .25)}
 .w{display:inline-flex;flex-direction:column;align-items:center;--p:0}
 .ko,.th{position:relative;white-space:nowrap}
-.ko{font:400 .5em/1.35 var(--f-ui);color:var(--soft);letter-spacing:.01em}
-.th{font-family:var(--f-th);line-height:1.5;padding-block:.05em;color:var(--fg)}
+.ko{font-family:var(--f-kr);font-size:.62em;line-height:1.25;color:var(--soft)}
+.th{font-family:var(--f-th);line-height:calc(var(--lh) + .15);color:var(--fg)}
 .cue.on .th,.cue.on .ko{color:var(--dim)}
 .cue.on .th::after,.cue.on .ko::after{
-  content:attr(data-x);position:absolute;inset:0;padding:inherit;white-space:nowrap;pointer-events:none;
+  content:attr(data-x);position:absolute;inset:0;white-space:nowrap;pointer-events:none;
   clip-path:inset(-.9em calc((100 - var(--p)) * 1% - var(--p) * .004em) -.9em 0)}
 .cue.on .th::after{color:var(--ochre)}
 .cue.on .ko::after{color:var(--jade)}
-.tr{grid-column:2;margin:.4em 0 0;font:400 calc(var(--fs) * .64)/1.6 var(--f-tr);color:var(--soft);text-wrap:pretty}
-.cue.on .tr{color:var(--fg)}
+.tr{margin:calc(var(--lh) * .25em) 0 0;font-family:var(--f-kr);font-weight:600;font-size:calc(var(--fs) * .84);line-height:calc(var(--lh) + .2);color:var(--fg);text-wrap:pretty}
 .no-ko .ko{display:none}
 .no-tr .tr{display:none}
-@media (hover:hover){.cue:hover{opacity:.85}.cue.on:hover{opacity:1}}
+@media (hover:hover){.cue:hover{opacity:.88}.cue.on:hover{opacity:1}}
 
-.local{flex:1;min-height:0;overflow-y:auto;padding-block:28px}
-.local h2{margin:0 0 8px;font:700 19px/1.35 var(--f-tr)}
-.local p{margin:0 0 14px;max-width:34em;color:var(--soft)}
-.drop{border:1.5px dashed var(--line);border-radius:14px;padding:22px 18px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;max-width:34em}
-.drop.over{border-color:var(--ochre);background:var(--panel)}
-.drop .hint{margin:0;font-size:12.5px;color:var(--dim)}
+.sheet{border-top:1px solid var(--line);background:var(--panel);padding-block:8px 6px;display:grid;gap:2px}
+.sheet .row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.sheet .row > span{font-size:14px}
+.step{display:flex;align-items:center;gap:6px}
+.step output{min-width:3.6em;text-align:center;font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums}
 
 .bar{border-top:1px solid var(--line);background:var(--bg);padding-block:8px 10px;display:flex;flex-direction:column;gap:6px}
 .row1{display:flex;align-items:center;gap:10px}
 .tm{font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums;min-width:2.9em;text-align:center}
 input[type=range]{flex:1;min-width:0;accent-color:var(--ochre);height:28px}
-.row2{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.row2{display:flex;align-items:center;gap:8px}
 .row2 .sp{flex:1}
-button{font:600 12.5px/1 var(--f-ui);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:999px;min-width:36px;height:36px;padding:0 8px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+button{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:999px;min-width:38px;height:38px;padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}
 button svg{width:19px;height:19px;fill:currentColor}
-button[aria-pressed="false"]{background:transparent;color:var(--dim)}
-button.play{width:48px;height:48px;padding:0;border:0;background:var(--ochre);color:var(--on-ochre)}
+button.play{width:50px;height:50px;padding:0;border:0;background:var(--ochre);color:var(--on-ochre)}
 button.play svg{width:24px;height:24px}
-.top .acts button{height:34px;padding:0 12px}
-button.ghost{background:transparent}
+button.round{padding:0;width:38px}
+button.sw{min-width:4.2em}
+button.sw[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);color:var(--panel)}
+button.sw[aria-pressed="false"]{background:transparent;color:var(--soft)}
+button[aria-expanded="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.cue{transition:none}}
 </style>
@@ -99,23 +94,19 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
   <header class="top gut">
     <div class="meta">
       <h1 class="ttl" id="ttl">태국법문 따라읽기</h1>
-      <p class="sub" id="sub">법문 음성과 자막을 불러오는 중이에요.</p>
-      <p class="legend">작은 글씨 = 한글 독음 · ※ 휘스퍼 오인식 확인 · (?) 뜻 불확실 · 단어를 누르면 그 자리부터</p>
+      <p class="by" id="by"></p>
     </div>
-    <div class="acts">
-      <select id="talkSel" aria-label="법문 고르기" hidden></select>
-      <button id="bOpen" class="ghost" type="button">내 파일 열기</button>
-    </div>
+    <select id="talkSel" aria-label="법문 고르기" hidden></select>
   </header>
   <p class="stat gut" id="stat" role="status" hidden></p>
-  <main class="list gut" id="list" hidden></main>
-  <section class="local gut" id="local" hidden>
-    <h2>내 기기의 파일로 듣기</h2>
-    <p>법문 음성(WAV·MP3)과 노래방 자막(VTT)을 함께 고르세요. 파일은 이 기기 안에서만 열리고 어디로도 올라가지 않아요.</p>
-    <div class="drop" id="drop">
-      <button id="bPick" type="button">음성과 자막 고르기</button>
-      <p class="hint">두 파일을 한 번에 고르거나, 이 영역에 끌어다 놓으세요. 하나씩 따로 골라도 됩니다.</p>
-    </div>
+  <main class="list gut" id="list"></main>
+  <section class="sheet gut" id="sheet" hidden>
+    <div class="row"><span>글자 크기</span>
+      <div class="step"><button class="round" id="fsDn" type="button" aria-label="글자 작게">−</button><output id="fsVal">18</output><button class="round" id="fsUp" type="button" aria-label="글자 크게">+</button></div></div>
+    <div class="row"><span>줄 간격</span>
+      <div class="step"><button class="round" id="lhDn" type="button" aria-label="줄 간격 좁게">−</button><output id="lhVal">130%</output><button class="round" id="lhUp" type="button" aria-label="줄 간격 넓게">+</button></div></div>
+    <div class="row"><span>한글 독음</span><button class="sw" id="bKo" type="button" aria-pressed="true">보임</button></div>
+    <div class="row"><span>한국어 번역</span><button class="sw" id="bTr" type="button" aria-pressed="true">보임</button></div>
   </section>
   <footer class="bar gut">
     <div class="row1">
@@ -124,18 +115,15 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
       <span class="tm" id="tDur">0:00</span>
     </div>
     <div class="row2">
-      <button id="bBack" type="button" aria-label="5초 뒤로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6V2L5 8l6 6v-4a6 6 0 1 1-6 6H3a8 8 0 1 0 8-8z"/></svg></button>
-      <button id="bPlay" class="play" type="button" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="icoPlay" d="M8 5v14l11-7z"/></svg></button>
-      <button id="bFwd" type="button" aria-label="5초 앞으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6V2l6 6-6 6v-4a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z"/></svg></button>
+      <button class="round" id="bBack" type="button" aria-label="5초 뒤로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6V2L5 8l6 6v-4a6 6 0 1 1-6 6H3a8 8 0 1 0 8-8z"/></svg></button>
+      <button class="play" id="bPlay" type="button" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="icoPlay" d="M8 5v14l11-7z"/></svg></button>
+      <button class="round" id="bFwd" type="button" aria-label="5초 앞으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6V2l6 6-6 6v-4a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z"/></svg></button>
       <span class="sp"></span>
       <button id="bRate" type="button" aria-label="재생 속도">1.0×</button>
-      <button id="bKo" type="button" aria-pressed="true">독음</button>
-      <button id="bTr" type="button" aria-pressed="true">번역</button>
-      <button id="bSize" type="button" aria-label="글자 크기">가</button>
+      <button id="bView" type="button" aria-expanded="false" aria-controls="sheet">보기</button>
     </div>
   </footer>
   <audio id="au" preload="metadata"></audio>
-  <input id="pick" type="file" multiple accept="audio/*,.wav,.mp3,.m4a,.vtt,text/vtt" hidden>
 </div>
 <script>
 (() => {
@@ -144,23 +132,38 @@ const $ = s => document.querySelector(s);
 const au = $('#au'), list = $('#list'), seek = $('#seek'), stat = $('#stat');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let cues = [], els = [], cur = -1, raf = 0, userScrollAt = 0, dragging = false, talks = [];
-const pending = { audio: null, vtt: null, url: null };
 
 const store = {
-  get(k, d) { try { const v = localStorage.getItem('tdk.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem('tdk.' + k, JSON.stringify(v)); } catch (e) {} }
+  get(k, d) { try { const v = localStorage.getItem('tsw.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('tsw.' + k, JSON.stringify(v)); } catch (e) {} }
 };
-const prefs = { ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 24), rate: store.get('rate', 1) };
-const SIZES = [20, 24, 28, 34], RATES = [0.75, 1, 1.25, 1.5];
+const SIZES = [14, 15, 16, 17, 18, 20, 22, 24, 27, 30];
+const SPACES = [1.15, 1.3, 1.45, 1.65, 1.85];
+const RATES = [0.75, 1, 1.25, 1.5];
+const prefs = { ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 18), lh: store.get('lh', 1.3), rate: store.get('rate', 1) };
+if (!SIZES.includes(prefs.fs)) prefs.fs = 18;
+if (!SPACES.includes(prefs.lh)) prefs.lh = 1.3;
+if (!RATES.includes(prefs.rate)) prefs.rate = 1;
 
 function applyPrefs() {
-  document.documentElement.style.setProperty('--fs', prefs.fs + 'px');
+  const r = document.documentElement.style;
+  r.setProperty('--fs', prefs.fs + 'px');
+  r.setProperty('--lh', String(prefs.lh));
   document.body.classList.toggle('no-ko', !prefs.ko);
   document.body.classList.toggle('no-tr', !prefs.tr);
-  $('#bKo').setAttribute('aria-pressed', String(prefs.ko));
-  $('#bTr').setAttribute('aria-pressed', String(prefs.tr));
+  $('#fsVal').textContent = prefs.fs;
+  $('#lhVal').textContent = Math.round(prefs.lh * 100) + '%';
+  $('#fsDn').disabled = prefs.fs === SIZES[0]; $('#fsUp').disabled = prefs.fs === SIZES[SIZES.length - 1];
+  $('#lhDn').disabled = prefs.lh === SPACES[0]; $('#lhUp').disabled = prefs.lh === SPACES[SPACES.length - 1];
+  for (const [id, on] of [['#bKo', prefs.ko], ['#bTr', prefs.tr]]) { $(id).setAttribute('aria-pressed', String(on)); $(id).textContent = on ? '보임' : '숨김'; }
   au.playbackRate = prefs.rate;
   $('#bRate').textContent = prefs.rate.toFixed(2).replace(/0$/, '') + '×';
+}
+function step(key, arr, d) {
+  const i = arr.indexOf(prefs[key]);
+  const n = Math.min(arr.length - 1, Math.max(0, i + d));
+  prefs[key] = arr[n]; store.set(key, prefs[key]); applyPrefs();
+  userScrollAt = 0; requestAnimationFrame(() => follow(true));
 }
 function say(msg) { stat.textContent = msg || ''; stat.hidden = !msg; }
 function mmss(t) {
@@ -169,7 +172,7 @@ function mmss(t) {
   return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(r).padStart(2, '0');
 }
 
-/* ---------- WebVTT (ruby + karaoke timestamps) ---------- */
+/* ---------- WebVTT (ruby + 단어 시각 태그) ---------- */
 function toSec(x) { const p = x.trim().split(':').map(Number); return p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p[0] * 60 + p[1]; }
 function unesc(s) { return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ').replace(/&lrm;|&rlm;/g, '').replace(/&amp;/g, '&'); }
 function strip(s) { return s.replace(/<[^>]*>/g, ''); }
@@ -189,8 +192,7 @@ function parseKaraoke(src, cue) {
 }
 function parseVTT(txt) {
   const out = [];
-  const blocks = txt.replace(/^﻿/, '').replace(/\r\n?/g, '\n').split(/\n{2,}/);
-  for (const b of blocks) {
+  for (const b of txt.replace(/^﻿/, '').replace(/\r\n?/g, '\n').split(/\n{2,}/)) {
     const lines = b.split('\n').filter(l => l.trim() !== '');
     if (!lines.length || /^(WEBVTT|NOTE|STYLE|REGION)\b/.test(lines[0])) continue;
     const k = lines.findIndex(l => l.includes('-->'));
@@ -227,7 +229,7 @@ function render() {
         line.append(sp); ws.push(sp);
       });
     } else { line.textContent = c.plain; line.classList.add('plain'); }
-    art.append(node('span', 'tc', mmss(c.start)), line);
+    art.append(line);
     if (c.tr) { const tr = node('p', 'tr', c.tr); tr.lang = 'ko'; art.append(tr); }
     list.append(art);
     return { art, ws };
@@ -240,10 +242,13 @@ function findCue(t) {
   while (lo <= hi) { const mid = (lo + hi) >> 1; if (cues[mid].start <= t + 0.001) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
   return ans;
 }
-function follow() {
-  if (cur < 0 || Date.now() - userScrollAt < 4000) return;
-  const el = els[cur].art;
-  list.scrollTo({ top: Math.max(0, el.offsetTop - list.clientHeight * 0.3), behavior: reduce ? 'auto' : 'smooth' });
+/* 지금 줄이 화면 아래쪽에 닿거나 위로 벗어날 때만 한 번에 넘긴다 */
+function follow(force) {
+  if (cur < 0 || Date.now() - userScrollAt < 5000) return;
+  const el = els[cur].art, h = list.clientHeight;
+  const top = el.offsetTop - list.scrollTop;
+  if (!force && top >= h * 0.04 && top + Math.min(el.offsetHeight, h * 0.45) <= h * 0.8) return;
+  list.scrollTo({ top: Math.max(0, el.offsetTop - h * 0.12), behavior: reduce ? 'auto' : 'smooth' });
 }
 function update(force) {
   const t = au.currentTime || 0;
@@ -272,58 +277,33 @@ function setPlaying(on) {
 
 /* ---------- 불러오기 ---------- */
 async function openTalk(t) {
-  say('자막을 불러오는 중이에요…');
-  let txt;
+  $('#ttl').textContent = t.title || '';
+  $('#by').textContent = [t.speaker, t.date, t.audience].filter(Boolean).join(' · ');
+  document.title = (t.title ? t.title + ' · ' : '') + '태국법문 따라읽기';
   try {
-    txt = typeof t.vttText === 'string' ? t.vttText : await (await fetch(t.vtt, { cache: 'no-cache' })).text();
-    cues = parseVTT(txt);
-    if (!cues.length) throw new Error('자막 줄을 찾지 못했어요.');
-  } catch (e) { say('자막 파일(VTT)을 읽지 못했어요. ' + (e && e.message ? e.message : '')); return; }
-  $('#ttl').textContent = t.title || '제목 없는 법문';
-  $('#sub').textContent = t.subtitle || '';
-  $('#local').hidden = true; list.hidden = false;
+    const r = await fetch(t.vtt, { cache: 'no-cache' });
+    if (!r.ok) throw new Error(String(r.status));
+    cues = parseVTT(await r.text());
+    if (!cues.length) throw new Error('empty');
+  } catch (e) { say('자막을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); return; }
   au.src = t.audio; au.load();
   list.scrollTop = 0; userScrollAt = 0;
   render();
   say('');
   try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title || '', artist: t.speaker || '', album: '태국법문' }); } catch (e) {}
 }
-function showLocal(msg) {
-  list.hidden = true; $('#local').hidden = false;
-  $('#ttl').textContent = '태국법문 따라읽기';
-  $('#sub').textContent = '이 기기에 있는 법문 음성과 자막을 골라 들을 수 있어요.';
-  say(msg || '');
-}
-async function openFiles(files) {
-  for (const f of files) {
-    if (/\.vtt$/i.test(f.name) || f.type === 'text/vtt') pending.vtt = f;
-    else if (/^audio\//.test(f.type) || /\.(wav|mp3|m4a|aac|ogg|oga|opus|flac|webm)$/i.test(f.name)) pending.audio = f;
-  }
-  if (!pending.audio || !pending.vtt) {
-    if ($('#local').hidden) showLocal();
-    say(pending.audio ? '음성은 골랐어요. 이제 자막(VTT)을 골라 주세요.' : pending.vtt ? '자막은 골랐어요. 이제 음성(WAV·MP3)을 골라 주세요.' : 'WAV·MP3 음성과 VTT 자막 파일만 열 수 있어요.');
-    return;
-  }
-  if (pending.url) URL.revokeObjectURL(pending.url);
-  pending.url = URL.createObjectURL(pending.audio);
-  const name = pending.audio.name.replace(/\.[^.]+$/, '');
-  await openTalk({ title: name, subtitle: pending.vtt.name, audio: pending.url, vttText: await pending.vtt.text() });
-}
 async function boot() {
   applyPrefs();
-  const q = new URLSearchParams(location.search);
-  if (q.get('audio') && q.get('vtt')) return openTalk({ title: q.get('title') || '', audio: q.get('audio'), vtt: q.get('vtt') });
   try {
     const r = await fetch('talks.json', { cache: 'no-cache' });
     if (!r.ok) throw new Error(String(r.status));
     talks = await r.json();
     if (!Array.isArray(talks) || !talks.length) throw new Error('empty');
-  } catch (e) { showLocal(); return; }
+  } catch (e) { say('법문 목록을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); return; }
   const sel = $('#talkSel');
   talks.forEach(t => { const o = node('option', '', t.short || t.title); o.value = t.id; sel.append(o); });
   sel.hidden = talks.length < 2;
-  const want = location.hash.slice(1);
-  const first = talks.find(t => t.id === want) || talks[0];
+  const first = talks.find(t => t.id === location.hash.slice(1)) || talks[0];
   sel.value = first.id;
   openTalk(first);
 }
@@ -335,15 +315,23 @@ au.addEventListener('ended', () => { cancelAnimationFrame(raf); update(); setPla
 au.addEventListener('seeked', () => update(true));
 au.addEventListener('timeupdate', () => { if (au.paused) update(); });
 au.addEventListener('loadedmetadata', () => { seek.max = au.duration || 0; $('#tDur').textContent = mmss(au.duration); });
-au.addEventListener('error', () => { if (au.getAttribute('src')) say('음성 파일을 열지 못했어요. 파일 형식이나 주소를 확인해 주세요.'); });
+au.addEventListener('error', () => { if (au.getAttribute('src')) say('음성을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); });
 
-$('#bPlay').addEventListener('click', () => { if (!au.src) return; au.paused ? au.play().catch(() => say('재생을 시작하지 못했어요. 한 번 더 눌러 주세요.')) : au.pause(); });
+$('#bPlay').addEventListener('click', () => { if (!au.src) return; au.paused ? au.play().catch(() => {}) : au.pause(); });
 $('#bBack').addEventListener('click', () => { au.currentTime = Math.max(0, au.currentTime - 5); userScrollAt = 0; });
 $('#bFwd').addEventListener('click', () => { au.currentTime = Math.min(au.duration || 0, au.currentTime + 5); userScrollAt = 0; });
 $('#bRate').addEventListener('click', () => { prefs.rate = RATES[(RATES.indexOf(prefs.rate) + 1) % RATES.length]; store.set('rate', prefs.rate); applyPrefs(); });
+$('#bView').addEventListener('click', () => {
+  const open = $('#sheet').hidden;
+  $('#sheet').hidden = !open; $('#bView').setAttribute('aria-expanded', String(open));
+  requestAnimationFrame(() => follow(true));
+});
+$('#fsDn').addEventListener('click', () => step('fs', SIZES, -1));
+$('#fsUp').addEventListener('click', () => step('fs', SIZES, 1));
+$('#lhDn').addEventListener('click', () => step('lh', SPACES, -1));
+$('#lhUp').addEventListener('click', () => step('lh', SPACES, 1));
 $('#bKo').addEventListener('click', () => { prefs.ko = !prefs.ko; store.set('ko', prefs.ko); applyPrefs(); });
 $('#bTr').addEventListener('click', () => { prefs.tr = !prefs.tr; store.set('tr', prefs.tr); applyPrefs(); });
-$('#bSize').addEventListener('click', () => { const i = SIZES.indexOf(prefs.fs); prefs.fs = SIZES[(i + 1) % SIZES.length]; store.set('fs', prefs.fs); applyPrefs(); });
 seek.addEventListener('input', () => { dragging = true; $('#tNow').textContent = mmss(+seek.value); });
 seek.addEventListener('change', () => { dragging = false; au.currentTime = +seek.value; userScrollAt = 0; });
 list.addEventListener('click', e => {
@@ -358,18 +346,11 @@ $('#talkSel').addEventListener('change', e => {
   const t = talks.find(x => x.id === e.target.value);
   if (t) { au.pause(); history.replaceState(null, '', '#' + t.id); openTalk(t); }
 });
-$('#bOpen').addEventListener('click', () => $('#pick').click());
-$('#bPick').addEventListener('click', () => $('#pick').click());
-$('#pick').addEventListener('change', e => { openFiles([...e.target.files]); e.target.value = ''; });
-const drop = $('#drop');
-window.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
-window.addEventListener('dragleave', e => { if (!e.relatedTarget) drop.classList.remove('over'); });
-window.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer && e.dataTransfer.files.length) openFiles([...e.dataTransfer.files]); });
 document.addEventListener('keydown', e => {
   if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
   if (e.code === 'Space') { if (e.target.tagName === 'BUTTON') return; e.preventDefault(); $('#bPlay').click(); }
-  else if (e.code === 'ArrowLeft') { au.currentTime = Math.max(0, au.currentTime - 3); }
-  else if (e.code === 'ArrowRight') { au.currentTime = Math.min(au.duration || 0, au.currentTime + 3); }
+  else if (e.code === 'ArrowLeft') au.currentTime = Math.max(0, au.currentTime - 3);
+  else if (e.code === 'ArrowRight') au.currentTime = Math.min(au.duration || 0, au.currentTime + 3);
 });
 try {
   if ('mediaSession' in navigator) {
