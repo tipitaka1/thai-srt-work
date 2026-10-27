@@ -1,0 +1,386 @@
+<title>숲속 수행승 법문 듣기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600&display=swap">
+<style>
+/* Layout: one-screen reader. Title band / scrolling transcript / transport bar (+ view sheet).
+   Each word = Hangul reading stacked over the Thai word; about one second of speech lights up at a time. */
+:root{
+  --bg:#f3f4ef; --panel:#ffffff; --fg:#141916; --soft:#4b5550; --dim:#a4aca7; --line:#d8dcd5; --chip:#e4e8e1;
+  --ochre:#a35a08; --jade:#0e6d5d; --on-ochre:#ffffff; --tr-on:#13603a;
+  --f-th:"Noto Sans Thai","Noto Sans KR",sans-serif;
+  --f-kr:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --fs:16px; --lh:1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0f1412;--panel:#19211d;--fg:#f2eee4;--soft:#b8b4a8;--dim:#5b6660;--line:#29322e;--chip:#1f2824;--ochre:#eba443;--jade:#8ad5c2;--on-ochre:#14110c;--tr-on:#9ad9ad;color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#0f1412;--panel:#19211d;--fg:#f2eee4;--soft:#b8b4a8;--dim:#5b6660;--line:#29322e;--chip:#1f2824;--ochre:#eba443;--jade:#8ad5c2;--on-ochre:#14110c;--tr-on:#9ad9ad;color-scheme:dark}
+
+html{box-sizing:border-box;height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font:14px/1.5 var(--f-kr)}
+.app{height:100%;display:flex;flex-direction:column}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.top{display:flex;align-items:flex-start;gap:10px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
+.pf{width:42px;height:48px;flex:none;border-radius:8px;object-fit:cover;object-position:50% 20%;border:1px solid var(--line);background:var(--chip)}
+.top .meta{flex:1;min-width:0}
+.ttl{margin:0;font-weight:700;font-size:16px;line-height:1.4;letter-spacing:-.01em;text-wrap:balance}
+.by{margin:3px 0 0;font-size:12.5px;color:var(--soft)}
+.ttl,.by,.tr{word-break:keep-all;overflow-wrap:anywhere}
+select{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:8px;height:34px;max-width:9rem;padding:0 8px}
+.stat{margin:0;padding-block:8px;font-size:13px;color:var(--ochre);border-bottom:1px solid var(--line)}
+
+.list{flex:1;min-height:0;overflow-y:auto;position:relative;padding-block:10px 38vh;display:flex;flex-direction:column;gap:3px;-webkit-overflow-scrolling:touch}
+.cue{margin-inline:-10px;padding:6px 10px 8px;border-radius:10px;opacity:.75;transition:opacity .3s,background-color .3s;cursor:pointer}
+.cue.on{opacity:1;background:var(--panel)}
+.line{margin:0;display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:.3em;row-gap:calc(var(--lh) * .12em);font-size:calc(var(--fs) * 1.06)}
+/* 줄 간격(--lh)은 글자 크기는 두고 줄 사이 여백만 늘이고 줄인다: 50%면 여백이 반 */
+.line.plain{display:block;font-family:var(--f-th);line-height:calc(1.15 + var(--lh) * .3)}
+.w{display:inline-flex;flex-direction:column;align-items:center;--p:0}
+.ko,.th{position:relative;white-space:nowrap}
+.ko{font-family:var(--f-kr);font-size:.62em;line-height:calc(1 + var(--lh) * .15);color:var(--soft)}
+.th{font-family:var(--f-th);line-height:calc(1 + var(--lh) * .3);color:var(--fg)}
+/* 노래방 표시(보기에서 켬): 말하는 단어를 따라 색이 차오른다 */
+.kara .cue.on .th,.kara .cue.on .ko{color:var(--dim)}
+.kara .cue.on .th::after,.kara .cue.on .ko::after{
+  content:attr(data-x);position:absolute;inset:0;white-space:nowrap;pointer-events:none;
+  clip-path:inset(-.9em calc((100 - var(--p)) * 1% - var(--p) * .004em) -.9em 0)}
+.kara .cue.on .th::after{color:var(--ochre)}
+.kara .cue.on .ko::after{color:var(--jade)}
+.tr{margin:calc(var(--lh) * .1em) 0 0;font-family:var(--f-kr);font-weight:600;font-size:var(--fs);line-height:calc(1.15 + var(--lh) * .3);color:var(--fg);text-wrap:pretty;transition:color .3s ease}
+.cue.on .tr{color:var(--tr-on)}
+.no-th .th{display:none}
+.no-th .ko{font-size:.86em;line-height:calc(1.1 + var(--lh) * .25)}
+.no-ko .ko{display:none}
+.no-th.no-ko .line{display:none}
+.no-tr .tr{display:none}
+@media (hover:hover){.cue:hover{opacity:.9}.cue.on:hover{opacity:1}}
+
+.sheet{border-top:1px solid var(--line);background:var(--panel);padding-block:6px 4px;display:grid}
+.sheet .row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.sheet .row > span{font-size:14px}
+.step{display:flex;align-items:center;gap:6px}
+.step output{min-width:3.6em;text-align:center;font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums}
+
+.bar{border-top:1px solid var(--line);background:var(--bg);padding-block:8px 10px;display:flex;flex-direction:column;gap:6px}
+.row1{display:flex;align-items:center;gap:10px}
+.tm{font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums;min-width:2.9em;text-align:center}
+input[type=range]{flex:1;min-width:0;accent-color:var(--ochre);height:28px}
+.row2{display:flex;align-items:center;gap:8px}
+.row2 .sp{flex:1}
+button{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:999px;min-width:38px;height:38px;padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+button:disabled{opacity:.35;cursor:default}
+button svg{width:19px;height:19px;fill:currentColor}
+button.play{width:50px;height:50px;padding:0;border:0;background:var(--ochre);color:var(--on-ochre)}
+button.play svg{width:24px;height:24px}
+button.round{padding:0;width:38px}
+button.ghost{background:transparent;border-color:transparent;color:var(--soft)}
+button.sw{min-width:4.2em}
+button.sw[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);color:var(--panel)}
+button.sw[aria-pressed="false"]{background:transparent;color:var(--soft)}
+button[aria-expanded="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.cue,.tr{transition:none}}
+</style>
+<!--HEAD-END-->
+<div class="app">
+  <header class="top gut">
+    <img class="pf" id="pf" alt="" hidden>
+    <div class="meta">
+      <h1 class="ttl" id="ttl">숲속 수행승 법문 듣기</h1>
+      <p class="by" id="by"></p>
+    </div>
+    <select id="talkSel" aria-label="법문 고르기" hidden></select>
+    <button class="round ghost" id="bShare" type="button" aria-label="공유하기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 0 0 21 5a3 3 0 1 0-5.91.7L8.04 9.81A2.99 2.99 0 0 0 3 12a3 3 0 0 0 5.04 2.19l7.12 4.16c-.05.21-.08.43-.08.65A2.92 2.92 0 1 0 18 16.08z"/></svg></button>
+  </header>
+  <p class="stat gut" id="stat" role="status" hidden></p>
+  <main class="list gut" id="list"></main>
+  <section class="sheet gut" id="sheet" hidden>
+    <div class="row"><span>글자 크기</span>
+      <div class="step"><button class="round" id="fsDn" type="button" aria-label="글자 작게">−</button><output id="fsVal">16</output><button class="round" id="fsUp" type="button" aria-label="글자 크게">+</button></div></div>
+    <div class="row"><span>줄 간격</span>
+      <div class="step"><button class="round" id="lhDn" type="button" aria-label="줄 간격 좁게">−</button><output id="lhVal">100%</output><button class="round" id="lhUp" type="button" aria-label="줄 간격 넓게">+</button></div></div>
+    <div class="row"><span>노래방 표시</span><button class="sw" id="bKara" type="button" aria-pressed="false">끔</button></div>
+    <div class="row"><span>태국어 원문</span><button class="sw" id="bTh" type="button" aria-pressed="true">보임</button></div>
+    <div class="row"><span>한글 독음</span><button class="sw" id="bKo" type="button" aria-pressed="true">보임</button></div>
+    <div class="row"><span>한국어 번역</span><button class="sw" id="bTr" type="button" aria-pressed="true">보임</button></div>
+  </section>
+  <footer class="bar gut">
+    <div class="row1">
+      <span class="tm" id="tNow">0:00</span>
+      <input id="seek" type="range" min="0" max="0" step="0.05" value="0" aria-label="재생 위치">
+      <span class="tm" id="tDur">0:00</span>
+    </div>
+    <div class="row2">
+      <button class="round" id="bBack" type="button" aria-label="5초 뒤로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6V2L5 8l6 6v-4a6 6 0 1 1-6 6H3a8 8 0 1 0 8-8z"/></svg></button>
+      <button class="play" id="bPlay" type="button" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="icoPlay" d="M8 5v14l11-7z"/></svg></button>
+      <button class="round" id="bFwd" type="button" aria-label="5초 앞으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6V2l6 6-6 6v-4a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z"/></svg></button>
+      <span class="sp"></span>
+      <button id="bRate" type="button" aria-label="재생 속도">1.0×</button>
+      <button id="bView" type="button" aria-expanded="false" aria-controls="sheet">보기</button>
+    </div>
+  </footer>
+  <audio id="au" preload="metadata"></audio>
+</div>
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const au = $('#au'), list = $('#list'), seek = $('#seek'), stat = $('#stat');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let cues = [], els = [], cur = -1, raf = 0, userScrollAt = 0, dragging = false, talks = [], talk = null, toastTimer = 0;
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('tsw3.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('tsw3.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+const SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26];
+const SPACES = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.35, 1.5];
+const RATES = [0.75, 1, 1.25, 1.5];
+const prefs = { kara: store.get('kara', false), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1) };
+if (!SIZES.includes(prefs.fs)) prefs.fs = 16;
+if (!SPACES.includes(prefs.lh)) prefs.lh = 1;
+if (!RATES.includes(prefs.rate)) prefs.rate = 1;
+
+function applyPrefs() {
+  const r = document.documentElement.style;
+  r.setProperty('--fs', prefs.fs + 'px');
+  r.setProperty('--lh', String(prefs.lh));
+  const b = document.body.classList;
+  b.toggle('kara', prefs.kara); b.toggle('no-th', !prefs.th); b.toggle('no-ko', !prefs.ko); b.toggle('no-tr', !prefs.tr);
+  $('#fsVal').textContent = prefs.fs;
+  $('#lhVal').textContent = Math.round(prefs.lh * 100) + '%';
+  $('#fsDn').disabled = prefs.fs === SIZES[0]; $('#fsUp').disabled = prefs.fs === SIZES[SIZES.length - 1];
+  $('#lhDn').disabled = prefs.lh === SPACES[0]; $('#lhUp').disabled = prefs.lh === SPACES[SPACES.length - 1];
+  for (const [id, on] of [['#bTh', prefs.th], ['#bKo', prefs.ko], ['#bTr', prefs.tr]]) { $(id).setAttribute('aria-pressed', String(on)); $(id).textContent = on ? '보임' : '숨김'; }
+  $('#bKara').setAttribute('aria-pressed', String(prefs.kara)); $('#bKara').textContent = prefs.kara ? '켬' : '끔';
+  au.playbackRate = prefs.rate;
+  $('#bRate').textContent = prefs.rate.toFixed(2).replace(/0$/, '') + '×';
+}
+function step(key, arr, d) {
+  const n = Math.min(arr.length - 1, Math.max(0, arr.indexOf(prefs[key]) + d));
+  prefs[key] = arr[n]; store.set(key, prefs[key]); applyPrefs();
+  userScrollAt = 0; requestAnimationFrame(() => follow(true));
+}
+function toggle(key) { prefs[key] = !prefs[key]; store.set(key, prefs[key]); applyPrefs(); requestAnimationFrame(() => follow(true)); }
+function say(msg) { stat.textContent = msg || ''; stat.hidden = !msg; }
+function toast(msg) { say(msg); clearTimeout(toastTimer); toastTimer = setTimeout(() => say(''), 3000); }
+function mmss(t) {
+  if (!isFinite(t)) t = 0;
+  const s = Math.floor(t), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), r = s % 60;
+  return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(r).padStart(2, '0');
+}
+
+/* ---------- WebVTT (ruby + 단어 시각 태그) ---------- */
+function toSec(x) { const p = x.trim().split(':').map(Number); return p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p[0] * 60 + p[1]; }
+function unesc(s) { return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ').replace(/&lrm;|&rlm;/g, '').replace(/&amp;/g, '&'); }
+function strip(s) { return s.replace(/<[^>]*>/g, ''); }
+function parseKaraoke(src, cue) {
+  const re = /<((?:\d+:)?\d{2}:\d{2}\.\d{3})>|<ruby>([\s\S]*?)<rt>([\s\S]*?)(?:<\/rt>)?\s*<\/ruby>|<[^>]*>|([^<]+)/g;
+  const words = []; let t = cue.start, m;
+  while ((m = re.exec(src))) {
+    if (m[1]) { const v = toSec(m[1]); const w = words[words.length - 1]; if (w && w.e == null) w.e = v; t = v; }
+    else if (m[2] !== undefined) words.push({ th: unesc(strip(m[2])).trim(), ko: unesc(strip(m[3])).trim(), s: t, e: null });
+    else if (m[4] !== undefined) { const tx = unesc(m[4]).trim(); if (tx) words.push({ th: tx, ko: '', s: t, e: null }); }
+  }
+  words.forEach((w, i) => {
+    if (w.e == null) w.e = i + 1 < words.length ? words[i + 1].s : cue.end;
+    if (w.e <= w.s) w.e = Math.min(cue.end, w.s + 0.05);
+  });
+  cue.words = words;
+}
+function parseVTT(txt) {
+  const out = [];
+  for (const b of txt.replace(/^﻿/, '').replace(/\r\n?/g, '\n').split(/\n{2,}/)) {
+    const lines = b.split('\n').filter(l => l.trim() !== '');
+    if (!lines.length || /^(WEBVTT|NOTE|STYLE|REGION)\b/.test(lines[0])) continue;
+    const k = lines.findIndex(l => l.includes('-->'));
+    if (k < 0) continue;
+    const m = lines[k].match(/((?:\d+:)?\d{2}:\d{2}[.,]\d{3})\s*-->\s*((?:\d+:)?\d{2}:\d{2}[.,]\d{3})/);
+    if (!m) continue;
+    const cue = { start: toSec(m[1].replace(',', '.')), end: toSec(m[2].replace(',', '.')), words: [], plain: '', tr: '' };
+    const th = [];
+    for (const ln of lines.slice(k + 1)) {
+      if (/<c\.ko[ .>]/.test(ln)) cue.tr = (cue.tr ? cue.tr + ' ' : '') + unesc(strip(ln)).trim();
+      else th.push(ln);
+    }
+    const src = th.join(' ');
+    if (/<ruby>|<(?:\d+:)?\d{2}:\d{2}\.\d{3}>/.test(src)) parseKaraoke(src, cue);
+    else cue.plain = unesc(strip(src)).trim();
+    out.push(cue);
+  }
+  return out.sort((a, b) => a.start - b.start);
+}
+
+/* ---------- 화면 ---------- */
+function node(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+function render() {
+  list.textContent = '';
+  els = cues.map((c, i) => {
+    const art = node('article', 'cue'); art.dataset.i = i;
+    const line = node('p', 'line'); line.lang = 'th';
+    const ws = [];
+    if (c.words.length) {
+      c.words.forEach((w, j) => {
+        const sp = node('span', 'w'); sp.dataset.j = j;
+        if (w.ko) { const k = node('span', 'ko', w.ko); k.lang = 'ko'; k.dataset.x = w.ko; sp.append(k); }
+        const th = node('span', 'th', w.th); th.dataset.x = w.th; sp.append(th);
+        line.append(sp); ws.push(sp);
+      });
+    } else { line.textContent = c.plain; line.classList.add('plain'); }
+    art.append(line);
+    if (c.tr) { const tr = node('p', 'tr', c.tr); tr.lang = 'ko'; art.append(tr); }
+    list.append(art);
+    return { art, ws };
+  });
+  cur = -1;
+  update(true);
+}
+function findCue(t) {
+  let lo = 0, hi = cues.length - 1, ans = -1;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (cues[mid].start <= t + 0.001) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+  return ans;
+}
+/* 지금 문장이 화면 아래쪽에 닿거나 위로 벗어날 때만 한 번에 넘긴다 */
+function follow(force) {
+  if (cur < 0 || Date.now() - userScrollAt < 5000) return;
+  const el = els[cur].art, h = list.clientHeight;
+  const top = el.offsetTop - list.scrollTop;
+  if (!force && top >= h * 0.04 && top + Math.min(el.offsetHeight, h * 0.45) <= h * 0.8) return;
+  list.scrollTo({ top: Math.max(0, el.offsetTop - h * 0.12), behavior: reduce ? 'auto' : 'smooth' });
+}
+function update(force) {
+  const t = au.currentTime || 0;
+  const i = findCue(t);
+  if (i !== cur || force) {
+    if (cur >= 0 && els[cur]) els[cur].art.classList.remove('on');
+    cur = i;
+    if (cur >= 0) { els[cur].art.classList.add('on'); follow(); }
+  }
+  if (cur >= 0 && prefs.kara) {
+    const c = cues[cur], ws = els[cur].ws;
+    for (let j = 0; j < ws.length; j++) {
+      const w = c.words[j];
+      const p = t <= w.s ? 0 : t >= w.e ? 100 : Math.round((t - w.s) / (w.e - w.s) * 100);
+      if (ws[j]._p !== p) { ws[j]._p = p; ws[j].style.setProperty('--p', p); }
+    }
+  }
+  if (!dragging) seek.value = t;
+  $('#tNow').textContent = mmss(t);
+}
+function loop() { update(); raf = requestAnimationFrame(loop); }
+function setPlaying(on) {
+  $('#icoPlay').setAttribute('d', on ? 'M7 5h4v14H7zM13 5h4v14h-4z' : 'M8 5v14l11-7z');
+  $('#bPlay').setAttribute('aria-label', on ? '일시정지' : '재생');
+}
+
+/* ---------- 불러오기 ---------- */
+async function openTalk(t) {
+  talk = t;
+  const pf = $('#pf');
+  if (t.portrait) { pf.src = t.portrait; pf.alt = t.speaker || ''; pf.hidden = false; } else pf.hidden = true;
+  $('#ttl').textContent = t.title || '';
+  $('#by').textContent = [t.speaker && t.age ? t.speaker + '(' + t.age + ')' : t.speaker, t.date, t.audience].filter(Boolean).join(' · ');
+  document.title = [t.title, t.speaker, t.dateShort].filter(Boolean).join(' · ');
+  try {
+    const r = await fetch(t.vtt, { cache: 'no-cache' });
+    if (!r.ok) throw new Error(String(r.status));
+    cues = parseVTT(await r.text());
+    if (!cues.length) throw new Error('empty');
+  } catch (e) { say('자막을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); return; }
+  au.src = t.audio; au.load();
+  list.scrollTop = 0; userScrollAt = 0;
+  render();
+  say('');
+  try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title || '', artist: t.speaker || '', album: '숲속 수행승 법문 듣기' }); } catch (e) {}
+}
+async function share() {
+  if (!talk) return;
+  /* 카톡 미리보기는 법문마다 따로 둔 공유용 주소(s/…html)에서 읽는다 */
+  const url = talk.share ? new URL(talk.share, location.href).href : location.origin + location.pathname + '?t=' + encodeURIComponent(talk.id);
+  const title = [talk.title, talk.speaker, talk.dateShort].filter(Boolean).join(' · ');
+  if (navigator.share) {
+    try { await navigator.share({ title, text: title, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(title + '\n' + url); toast('제목과 주소를 복사했어요. 카톡에 붙여 넣으세요.'); }
+  catch (e) { toast(url); }
+}
+async function boot() {
+  applyPrefs();
+  try {
+    const r = await fetch('talks.json', { cache: 'no-cache' });
+    if (!r.ok) throw new Error(String(r.status));
+    talks = await r.json();
+    if (!Array.isArray(talks) || !talks.length) throw new Error('empty');
+  } catch (e) { say('법문 목록을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); return; }
+  const sel = $('#talkSel');
+  talks.forEach(t => { const o = node('option', '', t.short || t.title); o.value = t.id; sel.append(o); });
+  sel.hidden = talks.length < 2;
+  const want = new URLSearchParams(location.search).get('t') || location.hash.slice(1);
+  const first = talks.find(t => t.id === want) || talks[0];
+  sel.value = first.id;
+  openTalk(first);
+}
+
+/* ---------- 조작 ---------- */
+au.addEventListener('play', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); setPlaying(true); });
+au.addEventListener('pause', () => { cancelAnimationFrame(raf); update(); setPlaying(false); });
+au.addEventListener('ended', () => { cancelAnimationFrame(raf); update(); setPlaying(false); });
+au.addEventListener('seeked', () => update(true));
+au.addEventListener('timeupdate', () => { if (au.paused) update(); });
+au.addEventListener('loadedmetadata', () => { seek.max = au.duration || 0; $('#tDur').textContent = mmss(au.duration); });
+au.addEventListener('error', () => { if (au.getAttribute('src')) say('음성을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); });
+
+$('#bPlay').addEventListener('click', () => { if (!au.src) return; au.paused ? au.play().catch(() => {}) : au.pause(); });
+$('#bBack').addEventListener('click', () => { au.currentTime = Math.max(0, au.currentTime - 5); userScrollAt = 0; });
+$('#bFwd').addEventListener('click', () => { au.currentTime = Math.min(au.duration || 0, au.currentTime + 5); userScrollAt = 0; });
+$('#bRate').addEventListener('click', () => { prefs.rate = RATES[(RATES.indexOf(prefs.rate) + 1) % RATES.length]; store.set('rate', prefs.rate); applyPrefs(); });
+$('#bView').addEventListener('click', () => {
+  const open = $('#sheet').hidden;
+  $('#sheet').hidden = !open; $('#bView').setAttribute('aria-expanded', String(open));
+  requestAnimationFrame(() => follow(true));
+});
+$('#bShare').addEventListener('click', share);
+$('#fsDn').addEventListener('click', () => step('fs', SIZES, -1));
+$('#fsUp').addEventListener('click', () => step('fs', SIZES, 1));
+$('#lhDn').addEventListener('click', () => step('lh', SPACES, -1));
+$('#lhUp').addEventListener('click', () => step('lh', SPACES, 1));
+$('#bKara').addEventListener('click', () => { toggle('kara'); update(true); });
+$('#bTh').addEventListener('click', () => toggle('th'));
+$('#bKo').addEventListener('click', () => toggle('ko'));
+$('#bTr').addEventListener('click', () => toggle('tr'));
+seek.addEventListener('input', () => { dragging = true; $('#tNow').textContent = mmss(+seek.value); });
+seek.addEventListener('change', () => { dragging = false; au.currentTime = +seek.value; userScrollAt = 0; });
+list.addEventListener('click', e => {
+  const art = e.target.closest('.cue'); if (!art || !au.src) return;
+  const c = cues[+art.dataset.i], w = e.target.closest('.w');
+  au.currentTime = Math.max(0, (w ? c.words[+w.dataset.j].s : c.start) - 0.05);
+  userScrollAt = 0;
+  if (au.paused) au.play().catch(() => {});
+});
+['wheel', 'touchmove'].forEach(ev => list.addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+$('#talkSel').addEventListener('change', e => {
+  const t = talks.find(x => x.id === e.target.value);
+  if (t) { au.pause(); history.replaceState(null, '', '?t=' + encodeURIComponent(t.id)); openTalk(t); }
+});
+document.addEventListener('keydown', e => {
+  if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if (e.code === 'Space') { if (e.target.tagName === 'BUTTON') return; e.preventDefault(); $('#bPlay').click(); }
+  else if (e.code === 'ArrowLeft') au.currentTime = Math.max(0, au.currentTime - 3);
+  else if (e.code === 'ArrowRight') au.currentTime = Math.min(au.duration || 0, au.currentTime + 3);
+});
+try {
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('seekbackward', () => $('#bBack').click());
+    navigator.mediaSession.setActionHandler('seekforward', () => $('#bFwd').click());
+  }
+} catch (e) {}
+if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]') && /^(https:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+boot();
+})();
+</script>
