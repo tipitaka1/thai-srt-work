@@ -1,5 +1,5 @@
 // 앱 화면만 기억해 두고(네트워크 먼저, 끊기면 저장본), 음성은 그대로 스트리밍합니다.
-const CACHE = 'thai-srt-work-v3';
+const CACHE = 'thai-srt-work-v4';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './talks.json', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {

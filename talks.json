@@ -9,8 +9,12 @@
     "date": "2003년 10월 11일 저녁",
     "dateShort": "03-10-11",
     "audience": "왓빠반땃 스님들에게",
-    "audio": "media/LT2401_sample_0920.mp3",
-    "vtt": "media/LT2401_sample_0920.vtt",
-    "card": "og/lt2401-0920.png"
+    "portrait": "img/luangta_bust.jpg",
+    "portraitFull": "img/luangta_portrait.jpg",
+    "audio": "media/LT2401_0920_2min.mp3",
+    "vtt": "media/LT2401_0920_2min.vtt",
+    "card": "og/lt2401-0920-card.png",
+    "share": "s/lt2401-0920.html",
+    "cardTitle": "모든 괴로움 덩어리는\n감각 욕망 번뇌에\n모여 있다"
   }
 ]

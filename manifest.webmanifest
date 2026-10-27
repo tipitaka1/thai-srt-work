@@ -3,6 +3,7 @@
   "short_name": "태국법문",
   "description": "태국어 법문을 한글 독음·번역과 함께 단어마다 따라 읽는 플레이어",
   "lang": "ko",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -28,6 +28,7 @@ ap.add_argument("--out", required=True)
 ap.add_argument("--site", required=True)
 ap.add_argument("--clip", nargs=2, type=float, default=[560.0, 592.9])
 ap.add_argument("--clip-name", default="LT2401_sample_0920")
+ap.add_argument("--reseg", help="샘플을 문장 단위로 다시 나눈 파일 (줄.토막-줄.토막|번역). 주면 --clip 대신 이 범위로 자른다")
 a = ap.parse_args()
 
 
@@ -231,10 +232,40 @@ def write_vtt(path, items, extra):
 
 write_vtt(a.out, [(c["n"], *payload(c)) for c in cues],
           "독음·번역이 있는 줄만 노래방으로 나오고, 나머지는 태국어 원문만 있습니다.\n")
-c0, c1 = a.clip
+def resegment(path):
+    """휘스퍼 줄을 넘나들며 태국어 토막 단위로 문장을 다시 묶는다 (번역이 1~2줄이 되게)."""
+    segs = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.rstrip("\n")
+            if not line.strip():
+                continue
+            rng, tr = line.split("|", 1)
+            (l0, i0), (l1, i1) = [tuple(map(int, p.split("."))) for p in rng.split("-")]
+            words, st, en = [], [], []
+            for n in range(l0, l1 + 1):
+                c = cues[n - 1]
+                lo, hi = (i0 if n == l0 else 0), (i1 if n == l1 else len(c["words"]) - 1)
+                words += c["words"][lo:hi + 1]
+                st += c["st"][lo:hi + 1]
+                en += c["en"][lo:hi + 1]
+            segs.append(dict(n=len(segs) + 1, words=words, st=st, en=en, tr=tr.strip()))
+    for i, s in enumerate(segs):
+        s["s"] = max(s["st"][0] - 0.12, segs[i - 1]["en"][-1] if i else 0.0)
+    for i, s in enumerate(segs):
+        s["e"] = min(s["en"][-1] + 0.5, segs[i + 1]["s"]) if i + 1 < len(segs) else s["en"][-1] + 0.6
+    return segs
+
+
 media = os.path.join(a.site, "media")
 os.makedirs(media, exist_ok=True)
-clip = [(c["n"], *payload(c, c0, c1 - c0)) for c in cues if c["s"] < c1 - 0.3 and c["e"] > c0 + 0.3]
+if a.reseg:
+    segs = resegment(a.reseg)
+    c0, c1 = min(a.clip[0], segs[0]["s"] - 0.2), segs[-1]["e"] + 0.3
+    clip = [(s["n"], *payload(s, c0, c1 - c0)) for s in segs]
+else:
+    c0, c1 = a.clip
+    clip = [(c["n"], *payload(c, c0, c1 - c0)) for c in cues if c["s"] < c1 - 0.3 and c["e"] > c0 + 0.3]
 write_vtt(os.path.join(media, a.clip_name + ".vtt"), clip,
           f"샘플: 원본 {fmt(c0)} ~ {fmt(c1)} 구간 (시각은 샘플 기준 0초부터).\n")
 subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", str(c0), "-i", a.mp3, "-t", f"{c1 - c0:.3f}", "-ac", "1",
