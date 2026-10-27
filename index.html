@@ -6,14 +6,14 @@
 <meta name="theme-color" content="#0f1412" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f3f4ef" media="(prefers-color-scheme: light)">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="태국법문">
+<meta name="apple-mobile-web-app-title" content="숲속 법문 듣기">
 <meta name="description" content="루앙따 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="태국법문 따라읽기">
+<meta property="og:site_name" content="숲속 수행승 법문 듣기">
 <meta property="og:title" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 루앙따 마하부와 · 03-10-11">
 <meta property="og:description" content="루앙따 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
 <meta property="og:url" content="https://tipitaka1.github.io/thai-srt-work/">
-<meta property="og:image" content="https://tipitaka1.github.io/thai-srt-work/og/lt2401-0920-card.png">
+<meta property="og:image" content="https://tipitaka1.github.io/thai-srt-work/og/lt2401-0920-card2.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
@@ -112,7 +112,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
   <header class="top gut">
     <img class="pf" id="pf" alt="" hidden>
     <div class="meta">
-      <h1 class="ttl" id="ttl">태국법문 따라읽기</h1>
+      <h1 class="ttl" id="ttl">숲속 수행승 법문 듣기</h1>
       <p class="by" id="by"></p>
     </div>
     <select id="talkSel" aria-label="법문 고르기" hidden></select>
@@ -322,7 +322,7 @@ async function openTalk(t) {
   list.scrollTop = 0; userScrollAt = 0;
   render();
   say('');
-  try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title || '', artist: t.speaker || '', album: '태국법문' }); } catch (e) {}
+  try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title || '', artist: t.speaker || '', album: '숲속 수행승 법문 듣기' }); } catch (e) {}
 }
 async function share() {
   if (!talk) return;
