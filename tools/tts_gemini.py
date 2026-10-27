@@ -24,7 +24,7 @@ PREF = ["gemini-2.5-pro-tts", "gemini-2.5-pro-preview-tts", "gemini-3.1-flash-tt
         "gemini-2.5-flash-tts", "gemini-2.5-flash-preview-tts"]
 
 
-def call(method, path, body=None, timeout=900):
+def call(method, path, body=None, timeout=1500):
     req = urllib.request.Request(API + path, method=method,
                                  headers={"x-goog-api-key": KEY, "Content-Type": "application/json"},
                                  data=None if body is None else json.dumps(body).encode("utf-8"))
