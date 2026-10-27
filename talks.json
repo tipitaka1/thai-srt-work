@@ -14,6 +14,7 @@
     "portraitFull": "img/luangta_portrait.jpg",
     "audio": "media/LT2401_talk.mp3",
     "vtt": "media/LT2401_talk.vtt",
+    "dub": "media/LT2401_talk_dub.mp3",
     "chapters": [
       {
         "t": 0.2,

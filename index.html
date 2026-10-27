@@ -24,14 +24,14 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
 <title>모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 아잔 마하부와 · 03-10-11</title>
-<script>try{var tsw=JSON.parse(localStorage.getItem("tsw3.theme"));if(tsw==="light"||tsw==="dark")document.documentElement.dataset.theme=tsw}catch(e){}</script>
+<script>try{var S=localStorage;if(+(S.getItem("tsw3.dv")||0)<2){S.removeItem("tsw3.kara");S.removeItem("tsw3.theme");S.setItem("tsw3.dv","2")}var tsw=JSON.parse(S.getItem("tsw3.theme")||"\"dark\"");if(tsw==="light"||tsw==="dark")document.documentElement.dataset.theme=tsw}catch(e){document.documentElement.dataset.theme="dark"}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600&display=swap">
 <style>
-/* Layout: one-screen reader. Title band / scrolling transcript / transport bar (+ view sheet).
-   Each word = Hangul reading stacked over the Thai word; about one second of speech lights up at a time. */
+/* Layout: one-screen reader. Title band / scrolling transcript (차례 on top) / transport bar (+ compact view sheet).
+   Each word = Hangul reading stacked over the Thai word; karaoke fill follows the spoken word (on by default). */
 :root{
   --bg:#f3f4ef; --panel:#ffffff; --fg:#141916; --soft:#4b5550; --dim:#a4aca7; --line:#d8dcd5; --chip:#e4e8e1;
   --ochre:#a35a08; --jade:#0e6d5d; --on-ochre:#ffffff; --tr-on:#13603a;
@@ -193,8 +193,8 @@ const SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26];
 const SPACES = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.35, 1.5];
 const RATES = [0.75, 1, 1.25, 1.5];
 const THEMES = ['auto', 'light', 'dark'];
-const prefs = { kara: store.get('kara', false), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1), theme: store.get('theme', 'auto'), dub: store.get('dub', false) };
-if (!THEMES.includes(prefs.theme)) prefs.theme = 'auto';
+const prefs = { kara: store.get('kara', true), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1), theme: store.get('theme', 'dark'), dub: store.get('dub', false) };
+if (!THEMES.includes(prefs.theme)) prefs.theme = 'dark';
 if (!SIZES.includes(prefs.fs)) prefs.fs = 16;
 if (!SPACES.includes(prefs.lh)) prefs.lh = 1;
 if (!RATES.includes(prefs.rate)) prefs.rate = 1;

@@ -10,8 +10,8 @@
   --out    더빙 mp3 (원음 mp3와 길이·시각이 같다), --report 문장별 배치 기록(JSON)
 
 배치: 한국어 문장은 태국어 문장이 말로 시작하는 때에 시작한다. 앞 문장이 길어 밀렸으면 바로 이어서 놓고,
-다음 태국어 문장 전까지 들어가지 않으면 최대 1.25배까지 빠르게 한다(음높이 그대로).
-섞기: 한국어가 나오는 동안 태국어 원음은 약 -16dB, 쉬는 틈에는 약 -6dB.
+다음 태국어 문장이 시작하고 0.7초 안에 끝나지 않으면 최대 1.2배까지 빠르게 한다(음높이 그대로).
+섞기: 한국어 문장마다 말소리 크기를 -20dBFS로 맞추고, 한국어가 나오는 동안 태국어 원음은 약 -16dB, 쉬는 틈에는 약 -6dB.
 """
 import argparse
 import json
@@ -36,7 +36,9 @@ ap.add_argument("--voice", default="Schedar")
 ap.add_argument("--out", required=True)
 ap.add_argument("--report")
 ap.add_argument("--bitrate", default="64k")
-ap.add_argument("--max-speed", type=float, default=1.25)
+ap.add_argument("--max-speed", type=float, default=1.2)
+ap.add_argument("--late-ok", type=float, default=0.7, help="다음 태국어 문장보다 이만큼(초)은 늦게 끝나도 빠르게 하지 않는다")
+ap.add_argument("--gap", type=float, default=0.25, help="한국어 문장 사이 최소 쉼(초)")
 a = ap.parse_args()
 
 side = json.load(open(a.side, encoding="utf-8"))
@@ -88,13 +90,15 @@ for rq in a.req:
     if sr != SR:
         sys.exit(f"{path}: 표본률 {sr}")
     segs, info, rate = align(x, sr, r["lines"])
-    gain = 10 ** ((-20.0 - speech_rms_db(x)) / 20)        # 테이크마다 말소리 크기를 -20dBFS로
+    gain = 10 ** ((-20.0 - speech_rms_db(x)) / 20)        # 테이크 전체 말소리를 -20dBFS로 맞추는 값
     bad = [k for k, i in enumerate(info) if abs(i["dev"]) > 0.35]
     print(f"{r['id']}: {len(x) / SR:.1f}초, 문장 {len(segs)}, 1자당 {rate:.3f}초, 어긋남 큰 문장 {len(bad)}개", bad[:10])
     pad, fade = int(0.04 * SR), int(0.012 * SR)
     for k, ((s, e), rng) in enumerate(zip(segs, r["ranges"])):
         i0, i1 = max(0, int(s * SR) - pad), min(len(x), int(e * SR) + pad)
-        y = x[i0:i1].copy() * gain
+        y = x[i0:i1].copy()
+        g = 10 ** ((-20.0 - speech_rms_db(y)) / 20)        # 문장마다 다시 맞춘다 (긴 테이크에서 소리가 커지거나 작아져도 고르게)
+        y *= min(max(g, gain / 2), gain * 2)               # 다만 테이크 기준에서 ±6dB 안에서만
         y[:fade] *= np.linspace(0, 1, fade)
         y[-fade:] *= np.linspace(1, 0, fade)
         clips[rng] = y
@@ -111,9 +115,9 @@ prev_end, speeds = 0.0, []
 rep = {d["rng"]: d for d in report}
 for k, g in enumerate(order):
     c, y = cues[g], clips[g]
-    start = max(c["speech"][0], prev_end + 0.12)
-    nxt = cues[order[k + 1]]["speech"][0] if k + 1 < len(order) else total - 0.3
-    avail = nxt - 0.1 - start
+    start = max(c["speech"][0], prev_end + a.gap)
+    nxt = cues[order[k + 1]]["speech"][0] + a.late_ok if k + 1 < len(order) else total - 0.3
+    avail = nxt - a.gap - start
     d = len(y) / SR
     f = 1.0
     if d > avail:

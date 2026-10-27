@@ -17,18 +17,31 @@ def frames_db(x, sr, hop_s=0.01):
 
 
 def units(s):
-    """문장의 예상 길이 단위: 한글 음절 1, 숫자·라틴 글자 0.6, 쉼표 류 1.5, 문장 안 마침표 2."""
+    """문장의 예상 길이 단위(한글 음절 1개 = 1): 숫자·라틴 글자 0.6, 문장 안 쉼표 류 2.5, 문장 안 마침표 4.5.
+    (TTS가 줄 안의 마침표·쉼표에서도 꽤 쉬므로 그 쉼을 길이에 넣는다)"""
     u = len(re.findall(r"[가-힣]", s)) + 0.6 * len(re.findall(r"[0-9A-Za-z]", s))
     body = s.rstrip(" .!?…'\"’”")
-    u += 1.5 * len(re.findall(r"[,·…]", body)) + 2.0 * len(re.findall(r"[.!?]", body))
+    u += 2.5 * len(re.findall(r"[,·…]", body)) + 4.5 * len(re.findall(r"[.!?]", body))
     return max(u, 1.0)
 
 
-def pauses(db, min_len=0.15):
-    floor, peak = np.percentile(db, 5), np.percentile(db, 95)
-    thr = floor + 0.25 * (peak - floor)
-    sil = db < thr
-    out, i, n = [], 0, len(db)
+def pauses(db, frac=0.4, min_len=0.12, win=5.0):
+    """쉼 후보: 앞뒤 5초의 바닥(10%)과 말소리(95%) 사이 40% 아래로 0.12초 넘게 내려간 구간.
+    긴 테이크에서 소리 크기나 바탕 잡음이 조금씩 달라져도 따라가도록 기준을 자리마다 다시 잡는다.
+    (바닥은 말소리보다 60dB 아래로는 잡지 않는다: 쉼이 아예 0으로 나오는 테이크 대비)"""
+    n = len(db)
+    w, step = int(win * 100), 50
+    centers = np.arange(0, n, step)
+    lo, hi = [], []
+    for c in centers:
+        seg = db[max(0, c - w):min(n, c + w)]
+        h = np.percentile(seg, 95)
+        lo.append(max(np.percentile(seg, 10), h - 60))
+        hi.append(h)
+    lo = np.interp(np.arange(n), centers, lo)
+    hi = np.interp(np.arange(n), centers, hi)
+    sil = db < lo + frac * (hi - lo)
+    out, i = [], 0
     while i < n:
         if sil[i]:
             j = i
@@ -44,56 +57,62 @@ def pauses(db, min_len=0.15):
     return start, end, cands
 
 
-def align(x, sr, sentences, sigma=0.18, beta=1.0):
-    """문장별 (말 시작, 말 끝) 초 목록과 점검용 정보."""
-    db = frames_db(x, sr)
-    start, end, cands = pauses(db)
-    n, m = len(sentences), len(cands)
-    u = [units(s) for s in sentences]
-    speech = (end - start) - 0.45 * (n - 1)          # 문장 사이 쉼을 대략 뺀 말 시간
-    rate = speech / sum(u)
-    # 경계 후보: 0 = 시작, 1..m = 쉼 후보, m+1 = 끝
-    pts = [(start, start)] + cands + [(end, end)]
+def _dp(pts, u, rate, sigma, beta):
+    n, m = len(u), len(pts) - 2
     INF = float("inf")
     cost = [[INF] * (m + 2) for _ in range(n + 1)]
     back = [[-1] * (m + 2) for _ in range(n + 1)]
     cost[0][0] = 0.0
     for k in range(1, n + 1):
         exp = u[k - 1] * rate
-        lo_j = 1 if k < n else m + 1
-        hi_j = m if k < n else m + 1
-        for j in range(lo_j, hi_j + 1):
+        js = range(1, m + 1) if k < n else (m + 1,)
+        for j in js:
             seg_end = pts[j][0]
             best, arg = INF, -1
-            for i in range(0, j):
-                if cost[k - 1][i] == INF:
+            for i in range(j - 1, -1, -1):
+                d = seg_end - pts[i][1]
+                if d > exp * 2.4:
+                    break
+                if cost[k - 1][i] == INF or d < exp * 0.42:
                     continue
-                seg_start = pts[i][1]
-                d = seg_end - seg_start
-                if d <= 0.2:
-                    continue
-                r = math.log(d / exp)
-                if abs(r) > 1.2:
-                    continue
-                c = cost[k - 1][i] + (r / sigma) ** 2
-                if k < n:
-                    plen = pts[j][1] - pts[j][0]
-                    c -= beta * math.log(plen / 0.2)
+                c = cost[k - 1][i] + (math.log(d / exp) / sigma) ** 2
                 if c < best:
                     best, arg = c, i
+            if arg >= 0 and k < n:
+                plen = pts[j][1] - pts[j][0]
+                best -= beta * math.log(plen / 0.12)
+                if plen < 0.3:
+                    best += 2.0
             cost[k][j], back[k][j] = best, arg
     if cost[n][m + 1] == INF:
-        raise ValueError("경계를 찾지 못했습니다")
+        return None
     path, j = [], m + 1
     for k in range(n, 0, -1):
         path.append(j)
         j = back[k][j]
     path.append(0)
-    path = path[::-1]
-    segs = []
-    for k in range(n):
-        s, e = pts[path[k]][1], pts[path[k + 1]][0]
-        segs.append((s, e))
+    return path[::-1]
+
+
+def align(x, sr, sentences, sigma=0.22, beta=1.5):
+    """문장별 (말 시작, 말 끝) 초 목록, 점검용 정보, 1단위당 초."""
+    db = frames_db(x, sr)
+    start, end, cands = pauses(db)
+    n = len(sentences)
+    u = [units(s) for s in sentences]
+    pts = [(start, start)] + cands + [(end, end)]
+    rate = ((end - start) - 0.8 * (n - 1)) / sum(u)
+    path = None
+    for _ in range(3):                      # 말 빠르기를 고쳐 가며 두세 번
+        p = _dp(pts, u, rate, sigma, beta)
+        if p is None:
+            break
+        path = p
+        segs = [(pts[path[k]][1], pts[path[k + 1]][0]) for k in range(n)]
+        rate = sum(e - s for s, e in segs) / sum(u)
+    if path is None:
+        raise ValueError("경계를 찾지 못했습니다")
+    segs = [(pts[path[k]][1], pts[path[k + 1]][0]) for k in range(n)]
     info = [dict(text=sentences[k], dur=round(segs[k][1] - segs[k][0], 2),
                  dev=round(math.log((segs[k][1] - segs[k][0]) / (u[k] * rate)), 2),
                  pause_after=round(pts[path[k + 1]][1] - pts[path[k + 1]][0], 2) if k < n - 1 else None)
