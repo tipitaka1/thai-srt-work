@@ -7,23 +7,23 @@
 <meta name="theme-color" content="#f3f4ef" media="(prefers-color-scheme: light)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="숲속 법문 듣기">
-<meta name="description" content="루앙따 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
+<meta name="description" content="아잔 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="숲속 수행승 법문 듣기">
-<meta property="og:title" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 루앙따 마하부와 · 03-10-11">
-<meta property="og:description" content="루앙따 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
+<meta property="og:title" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 아잔 마하부와 · 03-10-11">
+<meta property="og:description" content="아잔 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
 <meta property="og:url" content="https://tipitaka1.github.io/thai-srt-work/">
-<meta property="og:image" content="https://tipitaka1.github.io/thai-srt-work/og/lt2401-0920-card2.png">
+<meta property="og:image" content="https://tipitaka1.github.io/thai-srt-work/og/lt2401-0920-card3.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 루앙따 마하부와 · 03-10-11">
+<meta property="og:image:alt" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 아잔 마하부와 · 03-10-11">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
-<title>모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 루앙따 마하부와 · 03-10-11</title>
+<title>모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 아잔 마하부와 · 03-10-11</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,13 +64,17 @@ select{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border
 .line{margin:0;display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:.3em;row-gap:calc(var(--lh) * .12em);font-size:calc(var(--fs) * 1.06)}
 /* 줄 간격(--lh)은 글자 크기는 두고 줄 사이 여백만 늘이고 줄인다: 50%면 여백이 반 */
 .line.plain{display:block;font-family:var(--f-th);line-height:calc(1.15 + var(--lh) * .3)}
-.w{display:inline-flex;flex-direction:column;align-items:center}
-.ko,.th{white-space:nowrap;transition:color .3s ease}
+.w{display:inline-flex;flex-direction:column;align-items:center;--p:0}
+.ko,.th{position:relative;white-space:nowrap}
 .ko{font-family:var(--f-kr);font-size:.62em;line-height:calc(1 + var(--lh) * .15);color:var(--soft)}
 .th{font-family:var(--f-th);line-height:calc(1 + var(--lh) * .3);color:var(--fg)}
-.cue.on .th,.cue.on .ko{color:var(--dim)}
-.cue.on .w.lit .th{color:var(--ochre)}
-.cue.on .w.lit .ko{color:var(--jade)}
+/* 노래방 표시(보기에서 켬): 말하는 단어를 따라 색이 차오른다 */
+.kara .cue.on .th,.kara .cue.on .ko{color:var(--dim)}
+.kara .cue.on .th::after,.kara .cue.on .ko::after{
+  content:attr(data-x);position:absolute;inset:0;white-space:nowrap;pointer-events:none;
+  clip-path:inset(-.9em calc((100 - var(--p)) * 1% - var(--p) * .004em) -.9em 0)}
+.kara .cue.on .th::after{color:var(--ochre)}
+.kara .cue.on .ko::after{color:var(--jade)}
 .tr{margin:calc(var(--lh) * .1em) 0 0;font-family:var(--f-kr);font-weight:600;font-size:var(--fs);line-height:calc(1.15 + var(--lh) * .3);color:var(--fg);text-wrap:pretty;transition:color .3s ease}
 .cue.on .tr{color:var(--tr-on)}
 .no-th .th{display:none}
@@ -104,7 +108,7 @@ button.sw[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);c
 button.sw[aria-pressed="false"]{background:transparent;color:var(--soft)}
 button[aria-expanded="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){.cue,.ko,.th{transition:none}}
+@media (prefers-reduced-motion:reduce){.cue,.tr{transition:none}}
 </style>
 </head>
 <body>
@@ -125,6 +129,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
       <div class="step"><button class="round" id="fsDn" type="button" aria-label="글자 작게">−</button><output id="fsVal">16</output><button class="round" id="fsUp" type="button" aria-label="글자 크게">+</button></div></div>
     <div class="row"><span>줄 간격</span>
       <div class="step"><button class="round" id="lhDn" type="button" aria-label="줄 간격 좁게">−</button><output id="lhVal">100%</output><button class="round" id="lhUp" type="button" aria-label="줄 간격 넓게">+</button></div></div>
+    <div class="row"><span>노래방 표시</span><button class="sw" id="bKara" type="button" aria-pressed="false">끔</button></div>
     <div class="row"><span>태국어 원문</span><button class="sw" id="bTh" type="button" aria-pressed="true">보임</button></div>
     <div class="row"><span>한글 독음</span><button class="sw" id="bKo" type="button" aria-pressed="true">보임</button></div>
     <div class="row"><span>한국어 번역</span><button class="sw" id="bTr" type="button" aria-pressed="true">보임</button></div>
@@ -161,8 +166,7 @@ const store = {
 const SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26];
 const SPACES = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.35, 1.5];
 const RATES = [0.75, 1, 1.25, 1.5];
-const CHUNK = 0.5;   // 불이 들어오는 덩어리 길이(초)
-const prefs = { th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1) };
+const prefs = { kara: store.get('kara', false), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1) };
 if (!SIZES.includes(prefs.fs)) prefs.fs = 16;
 if (!SPACES.includes(prefs.lh)) prefs.lh = 1;
 if (!RATES.includes(prefs.rate)) prefs.rate = 1;
@@ -172,12 +176,13 @@ function applyPrefs() {
   r.setProperty('--fs', prefs.fs + 'px');
   r.setProperty('--lh', String(prefs.lh));
   const b = document.body.classList;
-  b.toggle('no-th', !prefs.th); b.toggle('no-ko', !prefs.ko); b.toggle('no-tr', !prefs.tr);
+  b.toggle('kara', prefs.kara); b.toggle('no-th', !prefs.th); b.toggle('no-ko', !prefs.ko); b.toggle('no-tr', !prefs.tr);
   $('#fsVal').textContent = prefs.fs;
   $('#lhVal').textContent = Math.round(prefs.lh * 100) + '%';
   $('#fsDn').disabled = prefs.fs === SIZES[0]; $('#fsUp').disabled = prefs.fs === SIZES[SIZES.length - 1];
   $('#lhDn').disabled = prefs.lh === SPACES[0]; $('#lhUp').disabled = prefs.lh === SPACES[SPACES.length - 1];
   for (const [id, on] of [['#bTh', prefs.th], ['#bKo', prefs.ko], ['#bTr', prefs.tr]]) { $(id).setAttribute('aria-pressed', String(on)); $(id).textContent = on ? '보임' : '숨김'; }
+  $('#bKara').setAttribute('aria-pressed', String(prefs.kara)); $('#bKara').textContent = prefs.kara ? '켬' : '끔';
   au.playbackRate = prefs.rate;
   $('#bRate').textContent = prefs.rate.toFixed(2).replace(/0$/, '') + '×';
 }
@@ -211,13 +216,6 @@ function parseKaraoke(src, cue) {
     if (w.e == null) w.e = i + 1 < words.length ? words[i + 1].s : cue.end;
     if (w.e <= w.s) w.e = Math.min(cue.end, w.s + 0.05);
   });
-  /* 약 1초씩 덩어리로 묶는다. 0.25초 넘게 쉬면 새 덩어리. */
-  cue.cs = [];
-  words.forEach((w, i) => {
-    const gap = i ? w.s - words[i - 1].e : 0;
-    if (!i || w.s - cue.cs[cue.cs.length - 1] >= CHUNK || gap >= 0.25) cue.cs.push(w.s);
-    w.k = cue.cs.length - 1;
-  });
   cue.words = words;
 }
 function parseVTT(txt) {
@@ -229,7 +227,7 @@ function parseVTT(txt) {
     if (k < 0) continue;
     const m = lines[k].match(/((?:\d+:)?\d{2}:\d{2}[.,]\d{3})\s*-->\s*((?:\d+:)?\d{2}:\d{2}[.,]\d{3})/);
     if (!m) continue;
-    const cue = { start: toSec(m[1].replace(',', '.')), end: toSec(m[2].replace(',', '.')), words: [], cs: [], plain: '', tr: '' };
+    const cue = { start: toSec(m[1].replace(',', '.')), end: toSec(m[2].replace(',', '.')), words: [], plain: '', tr: '' };
     const th = [];
     for (const ln of lines.slice(k + 1)) {
       if (/<c\.ko[ .>]/.test(ln)) cue.tr = (cue.tr ? cue.tr + ' ' : '') + unesc(strip(ln)).trim();
@@ -254,8 +252,8 @@ function render() {
     if (c.words.length) {
       c.words.forEach((w, j) => {
         const sp = node('span', 'w'); sp.dataset.j = j;
-        if (w.ko) { const k = node('span', 'ko', w.ko); k.lang = 'ko'; sp.append(k); }
-        sp.append(node('span', 'th', w.th));
+        if (w.ko) { const k = node('span', 'ko', w.ko); k.lang = 'ko'; k.dataset.x = w.ko; sp.append(k); }
+        const th = node('span', 'th', w.th); th.dataset.x = w.th; sp.append(th);
         line.append(sp); ws.push(sp);
       });
     } else { line.textContent = c.plain; line.classList.add('plain'); }
@@ -288,11 +286,12 @@ function update(force) {
     cur = i;
     if (cur >= 0) { els[cur].art.classList.add('on'); follow(); }
   }
-  if (cur >= 0) {
+  if (cur >= 0 && prefs.kara) {
     const c = cues[cur], ws = els[cur].ws;
     for (let j = 0; j < ws.length; j++) {
-      const lit = t >= c.cs[c.words[j].k] - 0.05;
-      if (ws[j]._lit !== lit) { ws[j]._lit = lit; ws[j].classList.toggle('lit', lit); }
+      const w = c.words[j];
+      const p = t <= w.s ? 0 : t >= w.e ? 100 : Math.round((t - w.s) / (w.e - w.s) * 100);
+      if (ws[j]._p !== p) { ws[j]._p = p; ws[j].style.setProperty('--p', p); }
     }
   }
   if (!dragging) seek.value = t;
@@ -375,6 +374,7 @@ $('#fsDn').addEventListener('click', () => step('fs', SIZES, -1));
 $('#fsUp').addEventListener('click', () => step('fs', SIZES, 1));
 $('#lhDn').addEventListener('click', () => step('lh', SPACES, -1));
 $('#lhUp').addEventListener('click', () => step('lh', SPACES, 1));
+$('#bKara').addEventListener('click', () => { toggle('kara'); update(true); });
 $('#bTh').addEventListener('click', () => toggle('th'));
 $('#bKo').addEventListener('click', () => toggle('ko'));
 $('#bTr').addEventListener('click', () => toggle('tr'));
