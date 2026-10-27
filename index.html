@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1412" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef0ea" media="(prefers-color-scheme: light)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="태국법문">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
+<title>태국법문 따라읽기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600&family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+/* Layout: one-screen reader. Header / scrolling transcript / transport bar.
+   Each word = Hangul reading stacked over the Thai word; the spoken word is wiped in robe ochre. */
+:root{
+  --bg:#eef0ea; --panel:#ffffff; --fg:#1c2320; --soft:#4a5550; --dim:#a0a8a3; --line:#d5dad3; --chip:#e2e6de;
+  --ochre:#a35a08; --jade:#0f6f5f; --on-ochre:#ffffff;
+  --f-th:"Sarabun","Leelawadee UI","Thonburi","Noto Sans Thai",Tahoma,sans-serif;
+  --f-ui:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --f-tr:"Gowun Batang","Batang","AppleMyungjo","Noto Serif KR",serif;
+  --fs:24px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0f1412;--panel:#18201c;--fg:#ebe7dc;--soft:#c2beb1;--dim:#5c6761;--line:#28312d;--chip:#1e2723;--ochre:#eba443;--jade:#89d4c1;--on-ochre:#14110c;color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#0f1412;--panel:#18201c;--fg:#ebe7dc;--soft:#c2beb1;--dim:#5c6761;--line:#28312d;--chip:#1e2723;--ochre:#eba443;--jade:#89d4c1;--on-ochre:#14110c;color-scheme:dark}
+
+html{box-sizing:border-box;height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font:14px/1.5 var(--f-ui)}
+.app{height:100%;display:flex;flex-direction:column}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.top{display:flex;align-items:flex-start;gap:12px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
+.top .meta{flex:1;min-width:0}
+.ttl{margin:0;font:700 17px/1.35 var(--f-tr);text-wrap:balance}
+.sub{margin:3px 0 0;font-size:12.5px;color:var(--soft)}
+.legend{margin:4px 0 0;font-size:11.5px;color:var(--dim)}
+.top .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+select{font:600 13px/1 var(--f-ui);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:8px;height:36px;max-width:12rem;padding:0 8px}
+
+.stat{margin:0;padding-block:8px;font-size:13px;color:var(--ochre);border-bottom:1px solid var(--line)}
+
+.list{flex:1;min-height:0;overflow-y:auto;position:relative;padding-block:14px 42vh;display:flex;flex-direction:column;gap:4px;-webkit-overflow-scrolling:touch}
+.cue{display:grid;grid-template-columns:2.6rem minmax(0,1fr);column-gap:10px;padding:10px 12px 12px;border-radius:12px;opacity:.58;transition:opacity .25s,background-color .25s;cursor:pointer}
+.cue.on{opacity:1;background:var(--panel)}
+.tc{grid-row:1 / span 2;padding-top:.55em;font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.line{margin:0;min-width:0;display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:.32em;row-gap:.1em;font-size:var(--fs)}
+.line.plain{display:block;font-family:var(--f-th);line-height:1.6}
+.w{display:inline-flex;flex-direction:column;align-items:center;--p:0}
+.ko,.th{position:relative;white-space:nowrap}
+.ko{font:400 .5em/1.35 var(--f-ui);color:var(--soft);letter-spacing:.01em}
+.th{font-family:var(--f-th);line-height:1.5;padding-block:.05em;color:var(--fg)}
+.cue.on .th,.cue.on .ko{color:var(--dim)}
+.cue.on .th::after,.cue.on .ko::after{
+  content:attr(data-x);position:absolute;inset:0;padding:inherit;white-space:nowrap;pointer-events:none;
+  clip-path:inset(-.9em calc((100 - var(--p)) * 1% - var(--p) * .004em) -.9em 0)}
+.cue.on .th::after{color:var(--ochre)}
+.cue.on .ko::after{color:var(--jade)}
+.tr{grid-column:2;margin:.4em 0 0;font:400 calc(var(--fs) * .64)/1.6 var(--f-tr);color:var(--soft);text-wrap:pretty}
+.cue.on .tr{color:var(--fg)}
+.no-ko .ko{display:none}
+.no-tr .tr{display:none}
+@media (hover:hover){.cue:hover{opacity:.85}.cue.on:hover{opacity:1}}
+
+.local{flex:1;min-height:0;overflow-y:auto;padding-block:28px}
+.local h2{margin:0 0 8px;font:700 19px/1.35 var(--f-tr)}
+.local p{margin:0 0 14px;max-width:34em;color:var(--soft)}
+.drop{border:1.5px dashed var(--line);border-radius:14px;padding:22px 18px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;max-width:34em}
+.drop.over{border-color:var(--ochre);background:var(--panel)}
+.drop .hint{margin:0;font-size:12.5px;color:var(--dim)}
+
+.bar{border-top:1px solid var(--line);background:var(--bg);padding-block:8px 10px;display:flex;flex-direction:column;gap:6px}
+.row1{display:flex;align-items:center;gap:10px}
+.tm{font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums;min-width:2.9em;text-align:center}
+input[type=range]{flex:1;min-width:0;accent-color:var(--ochre);height:28px}
+.row2{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.row2 .sp{flex:1}
+button{font:600 12.5px/1 var(--f-ui);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:999px;min-width:36px;height:36px;padding:0 8px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+button svg{width:19px;height:19px;fill:currentColor}
+button[aria-pressed="false"]{background:transparent;color:var(--dim)}
+button.play{width:48px;height:48px;padding:0;border:0;background:var(--ochre);color:var(--on-ochre)}
+button.play svg{width:24px;height:24px}
+.top .acts button{height:34px;padding:0 12px}
+button.ghost{background:transparent}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.cue{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top gut">
+    <div class="meta">
+      <h1 class="ttl" id="ttl">태국법문 따라읽기</h1>
+      <p class="sub" id="sub">법문 음성과 자막을 불러오는 중이에요.</p>
+      <p class="legend">작은 글씨 = 한글 독음 · ※ 휘스퍼 오인식 확인 · (?) 뜻 불확실 · 단어를 누르면 그 자리부터</p>
+    </div>
+    <div class="acts">
+      <select id="talkSel" aria-label="법문 고르기" hidden></select>
+      <button id="bOpen" class="ghost" type="button">내 파일 열기</button>
+    </div>
+  </header>
+  <p class="stat gut" id="stat" role="status" hidden></p>
+  <main class="list gut" id="list" hidden></main>
+  <section class="local gut" id="local" hidden>
+    <h2>내 기기의 파일로 듣기</h2>
+    <p>법문 음성(WAV·MP3)과 노래방 자막(VTT)을 함께 고르세요. 파일은 이 기기 안에서만 열리고 어디로도 올라가지 않아요.</p>
+    <div class="drop" id="drop">
+      <button id="bPick" type="button">음성과 자막 고르기</button>
+      <p class="hint">두 파일을 한 번에 고르거나, 이 영역에 끌어다 놓으세요. 하나씩 따로 골라도 됩니다.</p>
+    </div>
+  </section>
+  <footer class="bar gut">
+    <div class="row1">
+      <span class="tm" id="tNow">0:00</span>
+      <input id="seek" type="range" min="0" max="0" step="0.05" value="0" aria-label="재생 위치">
+      <span class="tm" id="tDur">0:00</span>
+    </div>
+    <div class="row2">
+      <button id="bBack" type="button" aria-label="5초 뒤로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6V2L5 8l6 6v-4a6 6 0 1 1-6 6H3a8 8 0 1 0 8-8z"/></svg></button>
+      <button id="bPlay" class="play" type="button" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="icoPlay" d="M8 5v14l11-7z"/></svg></button>
+      <button id="bFwd" type="button" aria-label="5초 앞으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6V2l6 6-6 6v-4a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z"/></svg></button>
+      <span class="sp"></span>
+      <button id="bRate" type="button" aria-label="재생 속도">1.0×</button>
+      <button id="bKo" type="button" aria-pressed="true">독음</button>
+      <button id="bTr" type="button" aria-pressed="true">번역</button>
+      <button id="bSize" type="button" aria-label="글자 크기">가</button>
+    </div>
+  </footer>
+  <audio id="au" preload="metadata"></audio>
+  <input id="pick" type="file" multiple accept="audio/*,.wav,.mp3,.m4a,.vtt,text/vtt" hidden>
+</div>
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const au = $('#au'), list = $('#list'), seek = $('#seek'), stat = $('#stat');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let cues = [], els = [], cur = -1, raf = 0, userScrollAt = 0, dragging = false, talks = [];
+const pending = { audio: null, vtt: null, url: null };
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('tdk.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('tdk.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+const prefs = { ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 24), rate: store.get('rate', 1) };
+const SIZES = [20, 24, 28, 34], RATES = [0.75, 1, 1.25, 1.5];
+
+function applyPrefs() {
+  document.documentElement.style.setProperty('--fs', prefs.fs + 'px');
+  document.body.classList.toggle('no-ko', !prefs.ko);
+  document.body.classList.toggle('no-tr', !prefs.tr);
+  $('#bKo').setAttribute('aria-pressed', String(prefs.ko));
+  $('#bTr').setAttribute('aria-pressed', String(prefs.tr));
+  au.playbackRate = prefs.rate;
+  $('#bRate').textContent = prefs.rate.toFixed(2).replace(/0$/, '') + '×';
+}
+function say(msg) { stat.textContent = msg || ''; stat.hidden = !msg; }
+function mmss(t) {
+  if (!isFinite(t)) t = 0;
+  const s = Math.floor(t), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), r = s % 60;
+  return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(r).padStart(2, '0');
+}
+
+/* ---------- WebVTT (ruby + karaoke timestamps) ---------- */
+function toSec(x) { const p = x.trim().split(':').map(Number); return p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p[0] * 60 + p[1]; }
+function unesc(s) { return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ').replace(/&lrm;|&rlm;/g, '').replace(/&amp;/g, '&'); }
+function strip(s) { return s.replace(/<[^>]*>/g, ''); }
+function parseKaraoke(src, cue) {
+  const re = /<((?:\d+:)?\d{2}:\d{2}\.\d{3})>|<ruby>([\s\S]*?)<rt>([\s\S]*?)(?:<\/rt>)?\s*<\/ruby>|<[^>]*>|([^<]+)/g;
+  const words = []; let t = cue.start, m;
+  while ((m = re.exec(src))) {
+    if (m[1]) { const v = toSec(m[1]); const w = words[words.length - 1]; if (w && w.e == null) w.e = v; t = v; }
+    else if (m[2] !== undefined) words.push({ th: unesc(strip(m[2])).trim(), ko: unesc(strip(m[3])).trim(), s: t, e: null });
+    else if (m[4] !== undefined) { const tx = unesc(m[4]).trim(); if (tx) words.push({ th: tx, ko: '', s: t, e: null }); }
+  }
+  words.forEach((w, i) => {
+    if (w.e == null) w.e = i + 1 < words.length ? words[i + 1].s : cue.end;
+    if (w.e <= w.s) w.e = Math.min(cue.end, w.s + 0.05);
+  });
+  cue.words = words;
+}
+function parseVTT(txt) {
+  const out = [];
+  const blocks = txt.replace(/^﻿/, '').replace(/\r\n?/g, '\n').split(/\n{2,}/);
+  for (const b of blocks) {
+    const lines = b.split('\n').filter(l => l.trim() !== '');
+    if (!lines.length || /^(WEBVTT|NOTE|STYLE|REGION)\b/.test(lines[0])) continue;
+    const k = lines.findIndex(l => l.includes('-->'));
+    if (k < 0) continue;
+    const m = lines[k].match(/((?:\d+:)?\d{2}:\d{2}[.,]\d{3})\s*-->\s*((?:\d+:)?\d{2}:\d{2}[.,]\d{3})/);
+    if (!m) continue;
+    const cue = { start: toSec(m[1].replace(',', '.')), end: toSec(m[2].replace(',', '.')), words: [], plain: '', tr: '' };
+    const th = [];
+    for (const ln of lines.slice(k + 1)) {
+      if (/<c\.ko[ .>]/.test(ln)) cue.tr = (cue.tr ? cue.tr + ' ' : '') + unesc(strip(ln)).trim();
+      else th.push(ln);
+    }
+    const src = th.join(' ');
+    if (/<ruby>|<(?:\d+:)?\d{2}:\d{2}\.\d{3}>/.test(src)) parseKaraoke(src, cue);
+    else cue.plain = unesc(strip(src)).trim();
+    out.push(cue);
+  }
+  return out.sort((a, b) => a.start - b.start);
+}
+
+/* ---------- 화면 ---------- */
+function node(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+function render() {
+  list.textContent = '';
+  els = cues.map((c, i) => {
+    const art = node('article', 'cue'); art.dataset.i = i;
+    const line = node('p', 'line'); line.lang = 'th';
+    const ws = [];
+    if (c.words.length) {
+      c.words.forEach((w, j) => {
+        const sp = node('span', 'w'); sp.dataset.j = j;
+        if (w.ko) { const k = node('span', 'ko', w.ko); k.lang = 'ko'; k.dataset.x = w.ko; sp.append(k); }
+        const t = node('span', 'th', w.th); t.dataset.x = w.th; sp.append(t);
+        line.append(sp); ws.push(sp);
+      });
+    } else { line.textContent = c.plain; line.classList.add('plain'); }
+    art.append(node('span', 'tc', mmss(c.start)), line);
+    if (c.tr) { const tr = node('p', 'tr', c.tr); tr.lang = 'ko'; art.append(tr); }
+    list.append(art);
+    return { art, ws };
+  });
+  cur = -1;
+  update(true);
+}
+function findCue(t) {
+  let lo = 0, hi = cues.length - 1, ans = -1;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (cues[mid].start <= t + 0.001) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+  return ans;
+}
+function follow() {
+  if (cur < 0 || Date.now() - userScrollAt < 4000) return;
+  const el = els[cur].art;
+  list.scrollTo({ top: Math.max(0, el.offsetTop - list.clientHeight * 0.3), behavior: reduce ? 'auto' : 'smooth' });
+}
+function update(force) {
+  const t = au.currentTime || 0;
+  const i = findCue(t);
+  if (i !== cur || force) {
+    if (cur >= 0 && els[cur]) els[cur].art.classList.remove('on');
+    cur = i;
+    if (cur >= 0) { els[cur].art.classList.add('on'); follow(); }
+  }
+  if (cur >= 0) {
+    const c = cues[cur], ws = els[cur].ws;
+    for (let j = 0; j < ws.length; j++) {
+      const w = c.words[j];
+      const p = t <= w.s ? 0 : t >= w.e ? 100 : Math.round((t - w.s) / (w.e - w.s) * 100);
+      if (ws[j]._p !== p) { ws[j]._p = p; ws[j].style.setProperty('--p', p); }
+    }
+  }
+  if (!dragging) seek.value = t;
+  $('#tNow').textContent = mmss(t);
+}
+function loop() { update(); raf = requestAnimationFrame(loop); }
+function setPlaying(on) {
+  $('#icoPlay').setAttribute('d', on ? 'M7 5h4v14H7zM13 5h4v14h-4z' : 'M8 5v14l11-7z');
+  $('#bPlay').setAttribute('aria-label', on ? '일시정지' : '재생');
+}
+
+/* ---------- 불러오기 ---------- */
+async function openTalk(t) {
+  say('자막을 불러오는 중이에요…');
+  let txt;
+  try {
+    txt = typeof t.vttText === 'string' ? t.vttText : await (await fetch(t.vtt, { cache: 'no-cache' })).text();
+    cues = parseVTT(txt);
+    if (!cues.length) throw new Error('자막 줄을 찾지 못했어요.');
+  } catch (e) { say('자막 파일(VTT)을 읽지 못했어요. ' + (e && e.message ? e.message : '')); return; }
+  $('#ttl').textContent = t.title || '제목 없는 법문';
+  $('#sub').textContent = t.subtitle || '';
+  $('#local').hidden = true; list.hidden = false;
+  au.src = t.audio; au.load();
+  list.scrollTop = 0; userScrollAt = 0;
+  render();
+  say('');
+  try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title || '', artist: t.speaker || '', album: '태국법문' }); } catch (e) {}
+}
+function showLocal(msg) {
+  list.hidden = true; $('#local').hidden = false;
+  $('#ttl').textContent = '태국법문 따라읽기';
+  $('#sub').textContent = '이 기기에 있는 법문 음성과 자막을 골라 들을 수 있어요.';
+  say(msg || '');
+}
+async function openFiles(files) {
+  for (const f of files) {
+    if (/\.vtt$/i.test(f.name) || f.type === 'text/vtt') pending.vtt = f;
+    else if (/^audio\//.test(f.type) || /\.(wav|mp3|m4a|aac|ogg|oga|opus|flac|webm)$/i.test(f.name)) pending.audio = f;
+  }
+  if (!pending.audio || !pending.vtt) {
+    if ($('#local').hidden) showLocal();
+    say(pending.audio ? '음성은 골랐어요. 이제 자막(VTT)을 골라 주세요.' : pending.vtt ? '자막은 골랐어요. 이제 음성(WAV·MP3)을 골라 주세요.' : 'WAV·MP3 음성과 VTT 자막 파일만 열 수 있어요.');
+    return;
+  }
+  if (pending.url) URL.revokeObjectURL(pending.url);
+  pending.url = URL.createObjectURL(pending.audio);
+  const name = pending.audio.name.replace(/\.[^.]+$/, '');
+  await openTalk({ title: name, subtitle: pending.vtt.name, audio: pending.url, vttText: await pending.vtt.text() });
+}
+async function boot() {
+  applyPrefs();
+  const q = new URLSearchParams(location.search);
+  if (q.get('audio') && q.get('vtt')) return openTalk({ title: q.get('title') || '', audio: q.get('audio'), vtt: q.get('vtt') });
+  try {
+    const r = await fetch('talks.json', { cache: 'no-cache' });
+    if (!r.ok) throw new Error(String(r.status));
+    talks = await r.json();
+    if (!Array.isArray(talks) || !talks.length) throw new Error('empty');
+  } catch (e) { showLocal(); return; }
+  const sel = $('#talkSel');
+  talks.forEach(t => { const o = node('option', '', t.short || t.title); o.value = t.id; sel.append(o); });
+  sel.hidden = talks.length < 2;
+  const want = location.hash.slice(1);
+  const first = talks.find(t => t.id === want) || talks[0];
+  sel.value = first.id;
+  openTalk(first);
+}
+
+/* ---------- 조작 ---------- */
+au.addEventListener('play', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); setPlaying(true); });
+au.addEventListener('pause', () => { cancelAnimationFrame(raf); update(); setPlaying(false); });
+au.addEventListener('ended', () => { cancelAnimationFrame(raf); update(); setPlaying(false); });
+au.addEventListener('seeked', () => update(true));
+au.addEventListener('timeupdate', () => { if (au.paused) update(); });
+au.addEventListener('loadedmetadata', () => { seek.max = au.duration || 0; $('#tDur').textContent = mmss(au.duration); });
+au.addEventListener('error', () => { if (au.getAttribute('src')) say('음성 파일을 열지 못했어요. 파일 형식이나 주소를 확인해 주세요.'); });
+
+$('#bPlay').addEventListener('click', () => { if (!au.src) return; au.paused ? au.play().catch(() => say('재생을 시작하지 못했어요. 한 번 더 눌러 주세요.')) : au.pause(); });
+$('#bBack').addEventListener('click', () => { au.currentTime = Math.max(0, au.currentTime - 5); userScrollAt = 0; });
+$('#bFwd').addEventListener('click', () => { au.currentTime = Math.min(au.duration || 0, au.currentTime + 5); userScrollAt = 0; });
+$('#bRate').addEventListener('click', () => { prefs.rate = RATES[(RATES.indexOf(prefs.rate) + 1) % RATES.length]; store.set('rate', prefs.rate); applyPrefs(); });
+$('#bKo').addEventListener('click', () => { prefs.ko = !prefs.ko; store.set('ko', prefs.ko); applyPrefs(); });
+$('#bTr').addEventListener('click', () => { prefs.tr = !prefs.tr; store.set('tr', prefs.tr); applyPrefs(); });
+$('#bSize').addEventListener('click', () => { const i = SIZES.indexOf(prefs.fs); prefs.fs = SIZES[(i + 1) % SIZES.length]; store.set('fs', prefs.fs); applyPrefs(); });
+seek.addEventListener('input', () => { dragging = true; $('#tNow').textContent = mmss(+seek.value); });
+seek.addEventListener('change', () => { dragging = false; au.currentTime = +seek.value; userScrollAt = 0; });
+list.addEventListener('click', e => {
+  const art = e.target.closest('.cue'); if (!art || !au.src) return;
+  const c = cues[+art.dataset.i], w = e.target.closest('.w');
+  au.currentTime = Math.max(0, (w ? c.words[+w.dataset.j].s : c.start) - 0.05);
+  userScrollAt = 0;
+  if (au.paused) au.play().catch(() => {});
+});
+['wheel', 'touchmove'].forEach(ev => list.addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+$('#talkSel').addEventListener('change', e => {
+  const t = talks.find(x => x.id === e.target.value);
+  if (t) { au.pause(); history.replaceState(null, '', '#' + t.id); openTalk(t); }
+});
+$('#bOpen').addEventListener('click', () => $('#pick').click());
+$('#bPick').addEventListener('click', () => $('#pick').click());
+$('#pick').addEventListener('change', e => { openFiles([...e.target.files]); e.target.value = ''; });
+const drop = $('#drop');
+window.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+window.addEventListener('dragleave', e => { if (!e.relatedTarget) drop.classList.remove('over'); });
+window.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer && e.dataTransfer.files.length) openFiles([...e.dataTransfer.files]); });
+document.addEventListener('keydown', e => {
+  if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if (e.code === 'Space') { if (e.target.tagName === 'BUTTON') return; e.preventDefault(); $('#bPlay').click(); }
+  else if (e.code === 'ArrowLeft') { au.currentTime = Math.max(0, au.currentTime - 3); }
+  else if (e.code === 'ArrowRight') { au.currentTime = Math.min(au.duration || 0, au.currentTime + 3); }
+});
+try {
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('seekbackward', () => $('#bBack').click());
+    navigator.mediaSession.setActionHandler('seekforward', () => $('#bFwd').click());
+  }
+} catch (e) {}
+if ('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]') && /^(https:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+boot();
+})();
+</script>
+</body>
+</html>
