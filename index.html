@@ -4,27 +4,39 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f1412" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#eef0ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#f3f4ef" media="(prefers-color-scheme: light)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="태국법문">
+<meta name="description" content="루앙따 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="태국법문 따라읽기">
+<meta property="og:title" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 루앙따 마하부와 · 03-10-11">
+<meta property="og:description" content="루앙따 마하부와(90세) · 2003년 10월 11일 저녁 · 왓빠반땃 스님들에게 — 태국어 원문, 한글 독음, 한국어 번역을 함께 보며 듣기">
+<meta property="og:url" content="https://tipitaka1.github.io/thai-srt-work/">
+<meta property="og:image" content="https://tipitaka1.github.io/thai-srt-work/og/lt2401-0920.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 루앙따 마하부와 · 03-10-11">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
-<title>태국법문 따라읽기</title>
+<title>모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 루앙따 마하부와 · 03-10-11</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600&display=swap">
 <style>
 /* Layout: one-screen reader. Title band / scrolling transcript / transport bar (+ view sheet).
-   Each word = Hangul reading stacked over the Thai word; the spoken word fills in robe ochre. */
+   Each word = Hangul reading stacked over the Thai word; about one second of speech lights up at a time. */
 :root{
   --bg:#f3f4ef; --panel:#ffffff; --fg:#141916; --soft:#4b5550; --dim:#a4aca7; --line:#d8dcd5; --chip:#e4e8e1;
   --ochre:#a35a08; --jade:#0e6d5d; --on-ochre:#ffffff;
   --f-th:"Noto Sans Thai","Noto Sans KR",sans-serif;
   --f-kr:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-  --fs:18px; --lh:1.3;
+  --fs:16px; --lh:1;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){--bg:#0f1412;--panel:#19211d;--fg:#f2eee4;--soft:#b8b4a8;--dim:#5b6660;--line:#29322e;--chip:#1f2824;--ochre:#eba443;--jade:#8ad5c2;--on-ochre:#14110c;color-scheme:dark}
@@ -37,34 +49,35 @@ body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);f
 .app{height:100%;display:flex;flex-direction:column}
 .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
-.top{display:flex;align-items:flex-start;gap:10px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:flex-start;gap:8px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
 .top .meta{flex:1;min-width:0}
 .ttl{margin:0;font-weight:700;font-size:16px;line-height:1.4;letter-spacing:-.01em;text-wrap:balance}
 .by{margin:3px 0 0;font-size:12.5px;color:var(--soft)}
-select{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:8px;height:34px;max-width:10rem;padding:0 8px}
+.ttl,.by,.tr{word-break:keep-all;overflow-wrap:anywhere}
+select{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:8px;height:34px;max-width:9rem;padding:0 8px}
 .stat{margin:0;padding-block:8px;font-size:13px;color:var(--ochre);border-bottom:1px solid var(--line)}
 
-.list{flex:1;min-height:0;overflow-y:auto;position:relative;padding-block:10px 38vh;display:flex;flex-direction:column;gap:calc((var(--lh) - 1) * 10px);-webkit-overflow-scrolling:touch}
-.cue{margin-inline:-10px;padding:calc(var(--lh) * 5px) 10px calc(var(--lh) * 6px);border-radius:10px;opacity:.72;transition:opacity .25s,background-color .25s;cursor:pointer}
+.list{flex:1;min-height:0;overflow-y:auto;position:relative;padding-block:10px 38vh;display:flex;flex-direction:column;gap:3px;-webkit-overflow-scrolling:touch}
+.cue{margin-inline:-10px;padding:6px 10px 8px;border-radius:10px;opacity:.75;transition:opacity .3s,background-color .3s;cursor:pointer}
 .cue.on{opacity:1;background:var(--panel)}
-.line{margin:0;display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:.3em;row-gap:calc((var(--lh) - 1) * .5em);font-size:var(--fs)}
-.line.plain{display:block;font-family:var(--f-th);line-height:calc(var(--lh) + .25)}
-.w{display:inline-flex;flex-direction:column;align-items:center;--p:0}
-.ko,.th{position:relative;white-space:nowrap}
-.ko{font-family:var(--f-kr);font-size:.62em;line-height:1.25;color:var(--soft)}
-.th{font-family:var(--f-th);line-height:calc(var(--lh) + .15);color:var(--fg)}
+.line{margin:0;display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:.3em;row-gap:calc(var(--lh) * .12em);font-size:calc(var(--fs) * 1.06)}
+.line.plain{display:block;font-family:var(--f-th);line-height:calc(var(--lh) * 1.45)}
+.w{display:inline-flex;flex-direction:column;align-items:center}
+.ko,.th{white-space:nowrap;transition:color .35s ease}
+.ko{font-family:var(--f-kr);font-size:.62em;line-height:calc(var(--lh) * 1.15);color:var(--soft)}
+.th{font-family:var(--f-th);line-height:calc(var(--lh) * 1.3);color:var(--fg)}
 .cue.on .th,.cue.on .ko{color:var(--dim)}
-.cue.on .th::after,.cue.on .ko::after{
-  content:attr(data-x);position:absolute;inset:0;white-space:nowrap;pointer-events:none;
-  clip-path:inset(-.9em calc((100 - var(--p)) * 1% - var(--p) * .004em) -.9em 0)}
-.cue.on .th::after{color:var(--ochre)}
-.cue.on .ko::after{color:var(--jade)}
-.tr{margin:calc(var(--lh) * .25em) 0 0;font-family:var(--f-kr);font-weight:600;font-size:calc(var(--fs) * .84);line-height:calc(var(--lh) + .2);color:var(--fg);text-wrap:pretty}
+.cue.on .w.lit .th{color:var(--ochre)}
+.cue.on .w.lit .ko{color:var(--jade)}
+.tr{margin:calc(var(--lh) * .1em) 0 0;font-family:var(--f-kr);font-weight:600;font-size:var(--fs);line-height:calc(var(--lh) * 1.45);color:var(--fg);text-wrap:pretty}
+.no-th .th{display:none}
+.no-th .ko{font-size:.86em;line-height:calc(var(--lh) * 1.35)}
 .no-ko .ko{display:none}
+.no-th.no-ko .line{display:none}
 .no-tr .tr{display:none}
-@media (hover:hover){.cue:hover{opacity:.88}.cue.on:hover{opacity:1}}
+@media (hover:hover){.cue:hover{opacity:.9}.cue.on:hover{opacity:1}}
 
-.sheet{border-top:1px solid var(--line);background:var(--panel);padding-block:8px 6px;display:grid;gap:2px}
+.sheet{border-top:1px solid var(--line);background:var(--panel);padding-block:6px 4px;display:grid}
 .sheet .row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
 .sheet .row > span{font-size:14px}
 .step{display:flex;align-items:center;gap:6px}
@@ -77,16 +90,18 @@ input[type=range]{flex:1;min-width:0;accent-color:var(--ochre);height:28px}
 .row2{display:flex;align-items:center;gap:8px}
 .row2 .sp{flex:1}
 button{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:999px;min-width:38px;height:38px;padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+button:disabled{opacity:.35;cursor:default}
 button svg{width:19px;height:19px;fill:currentColor}
 button.play{width:50px;height:50px;padding:0;border:0;background:var(--ochre);color:var(--on-ochre)}
 button.play svg{width:24px;height:24px}
 button.round{padding:0;width:38px}
+button.ghost{background:transparent;border-color:transparent;color:var(--soft)}
 button.sw{min-width:4.2em}
 button.sw[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);color:var(--panel)}
 button.sw[aria-pressed="false"]{background:transparent;color:var(--soft)}
 button[aria-expanded="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){.cue{transition:none}}
+@media (prefers-reduced-motion:reduce){.cue,.ko,.th{transition:none}}
 </style>
 </head>
 <body>
@@ -97,14 +112,16 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
       <p class="by" id="by"></p>
     </div>
     <select id="talkSel" aria-label="법문 고르기" hidden></select>
+    <button class="round ghost" id="bShare" type="button" aria-label="공유하기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 0 0 21 5a3 3 0 1 0-5.91.7L8.04 9.81A2.99 2.99 0 0 0 3 12a3 3 0 0 0 5.04 2.19l7.12 4.16c-.05.21-.08.43-.08.65A2.92 2.92 0 1 0 18 16.08z"/></svg></button>
   </header>
   <p class="stat gut" id="stat" role="status" hidden></p>
   <main class="list gut" id="list"></main>
   <section class="sheet gut" id="sheet" hidden>
     <div class="row"><span>글자 크기</span>
-      <div class="step"><button class="round" id="fsDn" type="button" aria-label="글자 작게">−</button><output id="fsVal">18</output><button class="round" id="fsUp" type="button" aria-label="글자 크게">+</button></div></div>
+      <div class="step"><button class="round" id="fsDn" type="button" aria-label="글자 작게">−</button><output id="fsVal">16</output><button class="round" id="fsUp" type="button" aria-label="글자 크게">+</button></div></div>
     <div class="row"><span>줄 간격</span>
-      <div class="step"><button class="round" id="lhDn" type="button" aria-label="줄 간격 좁게">−</button><output id="lhVal">130%</output><button class="round" id="lhUp" type="button" aria-label="줄 간격 넓게">+</button></div></div>
+      <div class="step"><button class="round" id="lhDn" type="button" aria-label="줄 간격 좁게">−</button><output id="lhVal">100%</output><button class="round" id="lhUp" type="button" aria-label="줄 간격 넓게">+</button></div></div>
+    <div class="row"><span>태국어 원문</span><button class="sw" id="bTh" type="button" aria-pressed="true">보임</button></div>
     <div class="row"><span>한글 독음</span><button class="sw" id="bKo" type="button" aria-pressed="true">보임</button></div>
     <div class="row"><span>한국어 번역</span><button class="sw" id="bTr" type="button" aria-pressed="true">보임</button></div>
   </section>
@@ -131,41 +148,43 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 const $ = s => document.querySelector(s);
 const au = $('#au'), list = $('#list'), seek = $('#seek'), stat = $('#stat');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let cues = [], els = [], cur = -1, raf = 0, userScrollAt = 0, dragging = false, talks = [];
+let cues = [], els = [], cur = -1, raf = 0, userScrollAt = 0, dragging = false, talks = [], talk = null, toastTimer = 0;
 
 const store = {
-  get(k, d) { try { const v = localStorage.getItem('tsw.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem('tsw.' + k, JSON.stringify(v)); } catch (e) {} }
+  get(k, d) { try { const v = localStorage.getItem('tsw3.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('tsw3.' + k, JSON.stringify(v)); } catch (e) {} }
 };
-const SIZES = [14, 15, 16, 17, 18, 20, 22, 24, 27, 30];
-const SPACES = [1.15, 1.3, 1.45, 1.65, 1.85];
+const SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26];
+const SPACES = [0.9, 1, 1.1, 1.2, 1.35, 1.5];
 const RATES = [0.75, 1, 1.25, 1.5];
-const prefs = { ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 18), lh: store.get('lh', 1.3), rate: store.get('rate', 1) };
-if (!SIZES.includes(prefs.fs)) prefs.fs = 18;
-if (!SPACES.includes(prefs.lh)) prefs.lh = 1.3;
+const CHUNK = 1.0;   // 불이 들어오는 덩어리 길이(초)
+const prefs = { th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1) };
+if (!SIZES.includes(prefs.fs)) prefs.fs = 16;
+if (!SPACES.includes(prefs.lh)) prefs.lh = 1;
 if (!RATES.includes(prefs.rate)) prefs.rate = 1;
 
 function applyPrefs() {
   const r = document.documentElement.style;
   r.setProperty('--fs', prefs.fs + 'px');
   r.setProperty('--lh', String(prefs.lh));
-  document.body.classList.toggle('no-ko', !prefs.ko);
-  document.body.classList.toggle('no-tr', !prefs.tr);
+  const b = document.body.classList;
+  b.toggle('no-th', !prefs.th); b.toggle('no-ko', !prefs.ko); b.toggle('no-tr', !prefs.tr);
   $('#fsVal').textContent = prefs.fs;
   $('#lhVal').textContent = Math.round(prefs.lh * 100) + '%';
   $('#fsDn').disabled = prefs.fs === SIZES[0]; $('#fsUp').disabled = prefs.fs === SIZES[SIZES.length - 1];
   $('#lhDn').disabled = prefs.lh === SPACES[0]; $('#lhUp').disabled = prefs.lh === SPACES[SPACES.length - 1];
-  for (const [id, on] of [['#bKo', prefs.ko], ['#bTr', prefs.tr]]) { $(id).setAttribute('aria-pressed', String(on)); $(id).textContent = on ? '보임' : '숨김'; }
+  for (const [id, on] of [['#bTh', prefs.th], ['#bKo', prefs.ko], ['#bTr', prefs.tr]]) { $(id).setAttribute('aria-pressed', String(on)); $(id).textContent = on ? '보임' : '숨김'; }
   au.playbackRate = prefs.rate;
   $('#bRate').textContent = prefs.rate.toFixed(2).replace(/0$/, '') + '×';
 }
 function step(key, arr, d) {
-  const i = arr.indexOf(prefs[key]);
-  const n = Math.min(arr.length - 1, Math.max(0, i + d));
+  const n = Math.min(arr.length - 1, Math.max(0, arr.indexOf(prefs[key]) + d));
   prefs[key] = arr[n]; store.set(key, prefs[key]); applyPrefs();
   userScrollAt = 0; requestAnimationFrame(() => follow(true));
 }
+function toggle(key) { prefs[key] = !prefs[key]; store.set(key, prefs[key]); applyPrefs(); requestAnimationFrame(() => follow(true)); }
 function say(msg) { stat.textContent = msg || ''; stat.hidden = !msg; }
+function toast(msg) { say(msg); clearTimeout(toastTimer); toastTimer = setTimeout(() => say(''), 3000); }
 function mmss(t) {
   if (!isFinite(t)) t = 0;
   const s = Math.floor(t), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), r = s % 60;
@@ -188,6 +207,13 @@ function parseKaraoke(src, cue) {
     if (w.e == null) w.e = i + 1 < words.length ? words[i + 1].s : cue.end;
     if (w.e <= w.s) w.e = Math.min(cue.end, w.s + 0.05);
   });
+  /* 약 1초씩 덩어리로 묶는다. 0.25초 넘게 쉬면 새 덩어리. */
+  cue.cs = [];
+  words.forEach((w, i) => {
+    const gap = i ? w.s - words[i - 1].e : 0;
+    if (!i || w.s - cue.cs[cue.cs.length - 1] >= CHUNK || gap >= 0.25) cue.cs.push(w.s);
+    w.k = cue.cs.length - 1;
+  });
   cue.words = words;
 }
 function parseVTT(txt) {
@@ -199,7 +225,7 @@ function parseVTT(txt) {
     if (k < 0) continue;
     const m = lines[k].match(/((?:\d+:)?\d{2}:\d{2}[.,]\d{3})\s*-->\s*((?:\d+:)?\d{2}:\d{2}[.,]\d{3})/);
     if (!m) continue;
-    const cue = { start: toSec(m[1].replace(',', '.')), end: toSec(m[2].replace(',', '.')), words: [], plain: '', tr: '' };
+    const cue = { start: toSec(m[1].replace(',', '.')), end: toSec(m[2].replace(',', '.')), words: [], cs: [], plain: '', tr: '' };
     const th = [];
     for (const ln of lines.slice(k + 1)) {
       if (/<c\.ko[ .>]/.test(ln)) cue.tr = (cue.tr ? cue.tr + ' ' : '') + unesc(strip(ln)).trim();
@@ -224,8 +250,8 @@ function render() {
     if (c.words.length) {
       c.words.forEach((w, j) => {
         const sp = node('span', 'w'); sp.dataset.j = j;
-        if (w.ko) { const k = node('span', 'ko', w.ko); k.lang = 'ko'; k.dataset.x = w.ko; sp.append(k); }
-        const t = node('span', 'th', w.th); t.dataset.x = w.th; sp.append(t);
+        if (w.ko) { const k = node('span', 'ko', w.ko); k.lang = 'ko'; sp.append(k); }
+        sp.append(node('span', 'th', w.th));
         line.append(sp); ws.push(sp);
       });
     } else { line.textContent = c.plain; line.classList.add('plain'); }
@@ -242,7 +268,7 @@ function findCue(t) {
   while (lo <= hi) { const mid = (lo + hi) >> 1; if (cues[mid].start <= t + 0.001) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
   return ans;
 }
-/* 지금 줄이 화면 아래쪽에 닿거나 위로 벗어날 때만 한 번에 넘긴다 */
+/* 지금 문장이 화면 아래쪽에 닿거나 위로 벗어날 때만 한 번에 넘긴다 */
 function follow(force) {
   if (cur < 0 || Date.now() - userScrollAt < 5000) return;
   const el = els[cur].art, h = list.clientHeight;
@@ -261,9 +287,8 @@ function update(force) {
   if (cur >= 0) {
     const c = cues[cur], ws = els[cur].ws;
     for (let j = 0; j < ws.length; j++) {
-      const w = c.words[j];
-      const p = t <= w.s ? 0 : t >= w.e ? 100 : Math.round((t - w.s) / (w.e - w.s) * 100);
-      if (ws[j]._p !== p) { ws[j]._p = p; ws[j].style.setProperty('--p', p); }
+      const lit = t >= c.cs[c.words[j].k] - 0.05;
+      if (ws[j]._lit !== lit) { ws[j]._lit = lit; ws[j].classList.toggle('lit', lit); }
     }
   }
   if (!dragging) seek.value = t;
@@ -277,9 +302,10 @@ function setPlaying(on) {
 
 /* ---------- 불러오기 ---------- */
 async function openTalk(t) {
+  talk = t;
   $('#ttl').textContent = t.title || '';
-  $('#by').textContent = [t.speaker, t.date, t.audience].filter(Boolean).join(' · ');
-  document.title = (t.title ? t.title + ' · ' : '') + '태국법문 따라읽기';
+  $('#by').textContent = [t.speaker && t.age ? t.speaker + '(' + t.age + ')' : t.speaker, t.date, t.audience].filter(Boolean).join(' · ');
+  document.title = [t.title, t.speaker, t.dateShort].filter(Boolean).join(' · ');
   try {
     const r = await fetch(t.vtt, { cache: 'no-cache' });
     if (!r.ok) throw new Error(String(r.status));
@@ -292,6 +318,16 @@ async function openTalk(t) {
   say('');
   try { if ('mediaSession' in navigator && window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title || '', artist: t.speaker || '', album: '태국법문' }); } catch (e) {}
 }
+async function share() {
+  if (!talk) return;
+  const url = location.origin + location.pathname + '?t=' + encodeURIComponent(talk.id);
+  const title = [talk.title, talk.speaker, talk.dateShort].filter(Boolean).join(' · ');
+  if (navigator.share) {
+    try { await navigator.share({ title, text: title, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(title + '\n' + url); toast('제목과 주소를 복사했어요. 카톡에 붙여 넣으세요.'); }
+  catch (e) { toast(url); }
+}
 async function boot() {
   applyPrefs();
   try {
@@ -303,7 +339,8 @@ async function boot() {
   const sel = $('#talkSel');
   talks.forEach(t => { const o = node('option', '', t.short || t.title); o.value = t.id; sel.append(o); });
   sel.hidden = talks.length < 2;
-  const first = talks.find(t => t.id === location.hash.slice(1)) || talks[0];
+  const want = new URLSearchParams(location.search).get('t') || location.hash.slice(1);
+  const first = talks.find(t => t.id === want) || talks[0];
   sel.value = first.id;
   openTalk(first);
 }
@@ -326,12 +363,14 @@ $('#bView').addEventListener('click', () => {
   $('#sheet').hidden = !open; $('#bView').setAttribute('aria-expanded', String(open));
   requestAnimationFrame(() => follow(true));
 });
+$('#bShare').addEventListener('click', share);
 $('#fsDn').addEventListener('click', () => step('fs', SIZES, -1));
 $('#fsUp').addEventListener('click', () => step('fs', SIZES, 1));
 $('#lhDn').addEventListener('click', () => step('lh', SPACES, -1));
 $('#lhUp').addEventListener('click', () => step('lh', SPACES, 1));
-$('#bKo').addEventListener('click', () => { prefs.ko = !prefs.ko; store.set('ko', prefs.ko); applyPrefs(); });
-$('#bTr').addEventListener('click', () => { prefs.tr = !prefs.tr; store.set('tr', prefs.tr); applyPrefs(); });
+$('#bTh').addEventListener('click', () => toggle('th'));
+$('#bKo').addEventListener('click', () => toggle('ko'));
+$('#bTr').addEventListener('click', () => toggle('tr'));
 seek.addEventListener('input', () => { dragging = true; $('#tNow').textContent = mmss(+seek.value); });
 seek.addEventListener('change', () => { dragging = false; au.currentTime = +seek.value; userScrollAt = 0; });
 list.addEventListener('click', e => {
@@ -344,7 +383,7 @@ list.addEventListener('click', e => {
 ['wheel', 'touchmove'].forEach(ev => list.addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
 $('#talkSel').addEventListener('change', e => {
   const t = talks.find(x => x.id === e.target.value);
-  if (t) { au.pause(); history.replaceState(null, '', '#' + t.id); openTalk(t); }
+  if (t) { au.pause(); history.replaceState(null, '', '?t=' + encodeURIComponent(t.id)); openTalk(t); }
 });
 document.addEventListener('keydown', e => {
   if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
