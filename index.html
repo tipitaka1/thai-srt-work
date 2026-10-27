@@ -24,7 +24,7 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
 <title>모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다 · 아잔 마하부와 · 03-10-11</title>
-<script>try{var S=localStorage;if(+(S.getItem("tsw3.dv")||0)<2){S.removeItem("tsw3.kara");S.removeItem("tsw3.theme");S.setItem("tsw3.dv","2")}var tsw=JSON.parse(S.getItem("tsw3.theme")||"\"dark\"");if(tsw==="light"||tsw==="dark")document.documentElement.dataset.theme=tsw}catch(e){document.documentElement.dataset.theme="dark"}</script>
+<script>try{var S=localStorage;var dv=+(S.getItem("tsw3.dv")||0);if(dv<2){S.removeItem("tsw3.kara");S.removeItem("tsw3.theme")}if(dv<3){S.removeItem("tsw3.dub");S.setItem("tsw3.dv","3")}var tsw=JSON.parse(S.getItem("tsw3.theme")||"\"dark\"");if(tsw==="light"||tsw==="dark")document.documentElement.dataset.theme=tsw}catch(e){document.documentElement.dataset.theme="dark"}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,8 +99,17 @@ select{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border
 .row1{display:flex;align-items:center;gap:10px}
 .tm{font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums;min-width:2.9em;text-align:center}
 input[type=range]{flex:1;min-width:0;accent-color:var(--ochre);height:28px}
-.row2{display:flex;align-items:center;gap:8px}
+.row2{display:flex;align-items:center;gap:7px}
 .row2 .sp{flex:1}
+/* 더빙 단추: 켬 = 진녹색으로 채움, 끔 = 흐린 말풍선에 빗금 */
+button.dub svg{width:24px;height:24px;overflow:visible}
+button.dub .bub{fill:currentColor}
+button.dub text{font:700 9.5px var(--f-kr);fill:var(--chip)}
+button.dub .cut{stroke:var(--soft);stroke-width:2.2;stroke-linecap:round;fill:none;display:none}
+button.dub[aria-pressed="true"]{background:var(--jade);border-color:var(--jade);color:var(--panel)}
+button.dub[aria-pressed="true"] text{fill:var(--jade)}
+button.dub[aria-pressed="false"]{color:var(--dim)}
+button.dub[aria-pressed="false"] .cut{display:block}
 button{font:600 13px/1 var(--f-kr);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:999px;min-width:38px;height:38px;padding:0 12px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px}
 button:disabled{opacity:.35;cursor:default}
 button svg{width:19px;height:19px;fill:currentColor}
@@ -157,7 +166,6 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
     </div>
     <div class="srow">
       <div class="grp"><span class="lb">화면</span><div class="seg" id="theme" role="radiogroup" aria-label="화면 밝기"><button type="button" role="radio" data-v="auto">자동</button><button type="button" role="radio" data-v="light">밝게</button><button type="button" role="radio" data-v="dark">어둡게</button></div></div>
-      <div class="grp" id="dubGrp" hidden><span class="lb">한국어 더빙</span><button class="sw" id="bDub" type="button" aria-pressed="false">끔</button></div>
     </div>
   </section>
   <footer class="bar gut">
@@ -171,6 +179,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
       <button class="play" id="bPlay" type="button" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="icoPlay" d="M8 5v14l11-7z"/></svg></button>
       <button class="round" id="bFwd" type="button" aria-label="5초 앞으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6V2l6 6-6 6v-4a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z"/></svg></button>
       <span class="sp"></span>
+      <button class="round dub" id="bDub" type="button" aria-pressed="true" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path class="bub" d="M5 3.5h14A2.5 2.5 0 0 1 21.5 6v9a2.5 2.5 0 0 1-2.5 2.5h-7.2L6.5 21.6v-4.1H5A2.5 2.5 0 0 1 2.5 15V6A2.5 2.5 0 0 1 5 3.5z"/><text x="12" y="14.6" text-anchor="middle">한</text><path class="cut" d="M4 21L21 3"/></svg></button>
       <button id="bRate" type="button" aria-label="재생 속도">1.0×</button>
       <button id="bView" type="button" aria-expanded="false" aria-controls="sheet">보기</button>
     </div>
@@ -193,7 +202,7 @@ const SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26];
 const SPACES = [0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.35, 1.5];
 const RATES = [0.75, 1, 1.25, 1.5];
 const THEMES = ['auto', 'light', 'dark'];
-const prefs = { kara: store.get('kara', true), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1), theme: store.get('theme', 'dark'), dub: store.get('dub', false) };
+const prefs = { kara: store.get('kara', true), th: store.get('th', true), ko: store.get('ko', true), tr: store.get('tr', true), fs: store.get('fs', 16), lh: store.get('lh', 1), rate: store.get('rate', 1), theme: store.get('theme', 'dark'), dub: store.get('dub', true) };
 if (!THEMES.includes(prefs.theme)) prefs.theme = 'dark';
 if (!SIZES.includes(prefs.fs)) prefs.fs = 16;
 if (!SPACES.includes(prefs.lh)) prefs.lh = 1;
@@ -210,7 +219,7 @@ function applyPrefs() {
   $('#fsDn').disabled = prefs.fs === SIZES[0]; $('#fsUp').disabled = prefs.fs === SIZES[SIZES.length - 1];
   $('#lhDn').disabled = prefs.lh === SPACES[0]; $('#lhUp').disabled = prefs.lh === SPACES[SPACES.length - 1];
   for (const [id, on] of [['#bTh', prefs.th], ['#bKo', prefs.ko], ['#bTr', prefs.tr], ['#bKara', prefs.kara]]) $(id).setAttribute('aria-pressed', String(on));
-  $('#bDub').setAttribute('aria-pressed', String(prefs.dub)); $('#bDub').textContent = prefs.dub ? '켬' : '끔';
+  $('#bDub').setAttribute('aria-pressed', String(prefs.dub)); $('#bDub').setAttribute('aria-label', prefs.dub ? '한국어 더빙 켜짐' : '한국어 더빙 꺼짐'); $('#bDub').title = prefs.dub ? '한국어 더빙 켬' : '한국어 더빙 끔';
   applyTheme();
   au.playbackRate = prefs.rate;
   $('#bRate').textContent = prefs.rate.toFixed(2).replace(/0$/, '') + '×';
@@ -379,7 +388,7 @@ async function openTalk(t) {
     cues = parseVTT(await r.text());
     if (!cues.length) throw new Error('empty');
   } catch (e) { say('자막을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.'); return; }
-  $('#dubGrp').hidden = !t.dub;
+  $('#bDub').hidden = !t.dub;
   au.src = audioSrc(); au.load();
   list.scrollTop = 0; userScrollAt = 0;
   render();
@@ -454,7 +463,7 @@ $('#fsUp').addEventListener('click', () => step('fs', SIZES, 1));
 $('#lhDn').addEventListener('click', () => step('lh', SPACES, -1));
 $('#lhUp').addEventListener('click', () => step('lh', SPACES, 1));
 $('#bKara').addEventListener('click', () => { toggle('kara'); update(true); });
-$('#bDub').addEventListener('click', () => { prefs.dub = !prefs.dub; store.set('dub', prefs.dub); applyPrefs(); switchAudio(); toast(prefs.dub ? '한국어 더빙으로 들어요. 태국어 원음은 작게 깔려요.' : '태국어 원음으로 들어요.'); });
+$('#bDub').addEventListener('click', () => { prefs.dub = !prefs.dub; store.set('dub', prefs.dub); applyPrefs(); switchAudio(); toast(prefs.dub ? '한국어 더빙 켬 · 태국어 원음은 작게 깔려요' : '한국어 더빙 끔 · 태국어 원음으로 들어요'); });
 for (const b of document.querySelectorAll('#theme button')) b.addEventListener('click', () => { prefs.theme = b.dataset.v; store.set('theme', prefs.theme); applyTheme(); });
 darkMQ.addEventListener && darkMQ.addEventListener('change', applyTheme);
 $('#bToc').addEventListener('click', () => { userScrollAt = Date.now() + 10000; list.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
