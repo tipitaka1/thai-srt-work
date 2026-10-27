@@ -1,0 +1,29 @@
+{
+ "id": "LT2401_dub_B",
+ "voice": "Schedar",
+ "model": "gemini-2.5-pro-preview-tts",
+ "mime": "audio/L16;codec=pcm;rate=24000",
+ "rate": 24000,
+ "seconds": 366.25,
+ "finish": "STOP",
+ "usage": {
+  "promptTokenCount": 1628,
+  "candidatesTokenCount": 9156,
+  "totalTokenCount": 10784,
+  "promptTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 1628
+   }
+  ],
+  "candidatesTokensDetails": [
+   {
+    "modality": "AUDIO",
+    "tokenCount": 9156
+   }
+  ],
+  "serviceTier": "standard"
+ },
+ "lines": 50,
+ "took": 220.9
+}
