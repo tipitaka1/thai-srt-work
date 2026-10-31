@@ -41,7 +41,7 @@
 | `subtitles/` | 휘스퍼 348줄 전체의 노래방 VTT(1~339줄 독음·번역), 검토용 SRT(`태국어 / 독음 / 번역`, 검토 표시 포함) |
 | `work/LT2401/` | 휘스퍼 원본 SRT, 단어별 시각 JSON, 독음·번역(`pron_ko.txt`, 검토 표시 포함), 태국어 토막(`seg_th.txt`), 문장 나누기와 차례(`talk_ko.txt`) |
 | `tts/requests/` | 제미나이 TTS 요청 (이 폴더에 올리면 Actions가 읽힘) |
-| `tools/` | 자막·음성 만들기 (`build_karaoke.py`), 앱 조립 (`app/core.html`, `assemble.py`), 공유 카드 (`render_card.py`), TTS (`tts_gemini.py`), 더빙 (`dub_align.py`, `dub_mix.py`) |
+| `tools/` | 자막·음성 만들기 (`build_karaoke.py`), 점검 (`check_lines.py` 독음·토막, `check_reseg.py` 문장 나누기, `take_quality.py` TTS 테이크), 앱 조립 (`app/core.html`, `assemble.py`), 공유 카드 (`render_card.py`), TTS (`tts_gemini.py`), 더빙 (`dub_align.py`, `dub_mix.py`) |
 
 TTS로 만든 원음(테이크)은 `tts-work` 가지에 따로 모아 둡니다.
 
