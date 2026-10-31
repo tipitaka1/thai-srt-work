@@ -1,11 +1,20 @@
 # thai-srt-work · 숲속 수행승 법문 듣기
 
-휘스퍼로 뽑은 태국어 법문 자막에 한글 독음과 한국어 번역을 달아, 폰에서 법문을 들으며 읽는 저장소입니다. 한국어 더빙으로도 들을 수 있습니다.
+태국어 법문 자막(휘스퍼로 뽑은 글, 또는 공식 녹취록에 시각을 얹은 글)에 한글 독음과 한국어 번역을 달아, 폰에서 법문을 들으며 읽는 저장소입니다. LT2401은 한국어 더빙으로도 들을 수 있습니다.
 
 **폰에서 열기:** <https://tipitaka1.github.io/thai-srt-work/>
 홈 화면에 추가하면 앱처럼 열립니다 (안드로이드 크롬: 메뉴 → 홈 화면에 추가 / 아이폰 사파리: 공유 → 홈 화면에 추가).
 
-지금 들어 있는 법문은 아잔 마하부와의 「모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다」입니다(2003년 10월 11일 저녁, 당시 90세, 왓빠반땃 스님들에게).
+지금 들어 있는 법문은 아잔 마하부와의 두 편입니다. 맨 위 고르는 칸에서 바꿉니다.
+
+**「번뇌 죽이는 공부(วิชาฆ่ากิเลส)」** 1987년 7월 29일, 당시 73세, 왓빠반땃 스님들에게 — 53분
+- 원본 녹음 107분 가운데 본 법문(원본 11:30~64:36)만 넣었습니다. 앞 11분 반과 뒤 42분은 녹취록에 없는 편한 대화(숲과 짐승 이야기 등)라 뺐습니다.
+- 화면의 태국어는 휘스퍼 글이 아니라 **공식 녹취록**(¶4–66)입니다. 서버 휘스퍼(large-v3)로 받아쓴 글에 녹취록 글자를 맞춰(글자 84% 일치) 시각을 얹었습니다. 안 맞은 글자는 앞뒤 맞은 글자 사이의 말소리 나는 시간에 나눠 놓은 추정입니다.
+- 한국어 번역은 녹취록 문단마다 옮긴 전문 번역을 태국어 토막과 뜻으로 짝지어 484줄로 나눴습니다. 차례 7개.
+- 한글 독음은 LT2401에서 손본 독음을 먼저 쓰고, 나머지는 발음 사전(tltk)과 같은 규칙으로 만든 뒤 검토했습니다.
+- 더빙은 없습니다. 음성은 Opus 24kbps(webm, 10.9MB)입니다.
+
+**「모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다」** 2003년 10월 11일 저녁, 당시 90세, 왓빠반땃 스님들에게 — 21분
 - 본 법문 21분 전체가 들어 있습니다. 원본 녹음 3:35, "내가 이렇게 아파서…"부터가 0:00입니다.
 - 앞의 금·달러 모금 이야기(1~35줄)와 끝의 잡음·휘스퍼 반복(340~348줄)은 뺐습니다.
 - 168문장, 목차 6개입니다.
@@ -36,18 +45,20 @@
 | `index.html`, `manifest.webmanifest`, `sw.js`, `icons/` | 웹앱 |
 | `talks.json` | 앱에 뜨는 법문 목록 (음성, 자막, 더빙, 차례) |
 | `media/` | 본 법문 음성 `LT2401_talk.mp3`(64kbps 모노), 자막 `.vtt`, 문장 시각·차례 `.json`, 한국어 더빙 `LT2401_talk_dub.mp3` |
+| `media/LT1045_talk.*` | 본 법문 음성 `.webm`(Opus 24kbps 모노), 노래방 자막 `.vtt`, 줄 시각·차례·줄마다 믿음 점수(`conf`, 녹취록 글자 중 휘스퍼와 맞은 비율) `.json` |
 | `s/` | 법문마다 카톡 공유용 주소 (미리보기 태그 + 앱으로 넘김) |
 | `og/`, `img/` | 공유 카드, 초상 |
 | `subtitles/` | 휘스퍼 348줄 전체의 노래방 VTT(1~339줄 독음·번역), 검토용 SRT(`태국어 / 독음 / 번역`, 검토 표시 포함) |
 | `work/LT2401/` | 휘스퍼 원본 SRT, 단어별 시각 JSON, 독음·번역(`pron_ko.txt`, 검토 표시 포함), 태국어 토막(`seg_th.txt`), 문장 나누기와 차례(`talk_ko.txt`) |
+| `work/LT1045/` | 녹취록 문단(태국어 토막·한국어 문장 `paras.json`), 줄 짝(`pairs.json`), 독음 사전(`pron_ko.json`), 빨리어 낱말(`pali.json`) |
 | `tts/requests/` | 제미나이 TTS 요청 (이 폴더에 올리면 Actions가 읽힘) |
-| `tools/` | 자막·음성 만들기 (`build_karaoke.py`), 점검 (`check_lines.py` 독음·토막, `check_reseg.py` 문장 나누기, `take_quality.py` TTS 테이크), 앱 조립 (`app/core.html`, `assemble.py`), 공유 카드 (`render_card.py`), TTS (`tts_gemini.py`), 더빙 (`dub_align.py`, `dub_mix.py`) |
+| `tools/` | 자막·음성 만들기 (`build_karaoke.py`), 점검 (`check_lines.py` 독음·토막, `check_reseg.py` 문장 나누기, `take_quality.py` TTS 테이크), 앱 조립 (`app/core.html`, `assemble.py`), 공유 카드 (`render_card.py`), TTS (`tts_gemini.py`), 더빙 (`dub_align.py`, `dub_mix.py`) | · 녹취록 법문은 `build_transcript.py`(녹취록 정렬 `th_align.py`, 한글 독음 `th_hangul.py`)
 
 TTS로 만든 원음(테이크)은 `tts-work` 가지에 따로 모아 둡니다.
 
 ## 법문 추가하기
 
-1. `media/`에 mp3와 vtt를 넣습니다.
+1. `media/`에 음성(mp3 또는 webm)과 vtt를 넣습니다.
 2. `talks.json`에 항목을 하나 더 적습니다.
    - 꼭 있어야 하는 칸: `id`, `title`, `speaker`, `date`, `audience`, `audio`, `vtt`
    - 있으면 쓰는 칸: `chapters`, `dub`
@@ -104,6 +115,21 @@ python3 tools/dub_mix.py --side media/LT2401_talk.json --src <원본 mp3 경로>
   --req tts/requests/LT2401_dub_A.json tts/requests/LT2401_dub_B.json tts/requests/LT2401_dub_C.json \
   --takes <tts-work 가지 폴더> --voice Schedar --out media/LT2401_talk_dub.mp3
 ```
+
+녹취록이 있는 법문(LT1045):
+
+```
+python3 tools/build_transcript.py --paras work/LT1045/paras.json --pairs work/LT1045/pairs.json \
+  --pron work/LT1045/pron_ko.json --pali work/LT1045/pali.json \
+  --ssw <서브웍스 휘스퍼 조각 LT1045_19870729_나_STT_SSW.json> --audio <원본 wma> --cut 690 3876 \
+  --chapters "4:이 공부는 무엇인가|12:겨우살이 비유: 번뇌가 '나'가 되는 방식|22:갈라내기의 실제|32:숲과 호랑이|42:번뇌의 날카로움과 스스로 묻기|57:제 방법은 제가 찾는다|64:맺음" \
+  --name "LT1045 (1987-07-29) Luang Ta Maha Bua - วิชาฆ่ากิเลส (번뇌 죽이는 공부)" \
+  --out-vtt media/LT1045_talk.vtt --out-json media/LT1045_talk.json
+```
+
+- `pairs.json`: 문단마다 `[한국어 첫 문장, 끝 문장, 태국어 첫 토막, 끝 토막]`(1부터, 끝 포함). 2초가 안 되는 줄은 같은 문단 이웃과 합칩니다.
+- 음성: `ffmpeg -ss 690 -to 3876 -i <원본> -ac 1 -ar 48000 -c:a libopus -b:a 24k -f webm media/LT1045_talk.webm` (앞뒤 0.3·0.6초 소리 키우기·줄이기)
+- pythainlp, tltk(발음 사전, gensim 없이 씀)가 필요합니다.
 
 앱 화면은 `tools/app/core.html`을 고친 뒤 `python3 tools/assemble.py tools/app/core.html .`로 `index.html`과 `s/` 공유 주소를 다시 만듭니다.
 

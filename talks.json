@@ -1,5 +1,54 @@
 [
   {
+    "id": "lt1045",
+    "short": "LT1045",
+    "title": "번뇌 죽이는 공부",
+    "thaiTitle": "วิชาฆ่ากิเลส",
+    "speaker": "아잔 마하부와",
+    "age": "73세",
+    "date": "1987년 7월 29일",
+    "dateShort": "87-07-29",
+    "audience": "왓빠반땃 스님들에게",
+    "length": "53분",
+    "portrait": "img/luangta_bust.jpg",
+    "portraitFull": "img/luangta_portrait.jpg",
+    "audio": "media/LT1045_talk.webm",
+    "vtt": "media/LT1045_talk.vtt",
+    "chapters": [
+      {
+        "t": 3.84,
+        "title": "이 공부는 무엇인가"
+      },
+      {
+        "t": 664.44,
+        "title": "겨우살이 비유: 번뇌가 '나'가 되는 방식"
+      },
+      {
+        "t": 1147.19,
+        "title": "갈라내기의 실제"
+      },
+      {
+        "t": 1701.79,
+        "title": "숲과 호랑이"
+      },
+      {
+        "t": 2193.34,
+        "title": "번뇌의 날카로움과 스스로 묻기"
+      },
+      {
+        "t": 2729.71,
+        "title": "제 방법은 제가 찾는다"
+      },
+      {
+        "t": 3080.75,
+        "title": "맺음"
+      }
+    ],
+    "card": "og/lt1045-card.png",
+    "share": "s/lt1045.html",
+    "cardTitle": "번뇌 죽이는\n공부"
+  },
+  {
     "id": "lt2401",
     "short": "LT2401",
     "title": "모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다",
