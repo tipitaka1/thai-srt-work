@@ -101,7 +101,7 @@ def _drop_jong(ch):
     return chr(ord(ch) - code % 28)
 
 
-SAME_PLACE = {'t': ('t',), 'p': ('p',), 'k': ('k',)}   # เจตนา 쩨따나 (พุทธ 풋타 는 그대로)
+SAME_PLACE = {}   # 받침을 빼지 않는다: มากกว่า 막꽈 · ปกติ 뽁까띠 (LT2401 의 เจตนา 쩨따나 는 사전에서)
 
 
 _tltk = None
@@ -175,7 +175,7 @@ def ipa_hangul(ipa, word=''):
                 ao = '오' if k_aw < n_short else '우'
             k_aw += 1
         out_syl.append(syl_hangul(pr, ao))
-    # 잇기: ล 앞 열린 음절은 받침 ㄹ(เวลา 웰라 · ทะเล 탈레), 같은 자리 받침+첫소리는 받침을 뺌(เจตนา 쩨따나)
+    # 잇기: ล 앞 열린 음절은 받침 ㄹ(เวลา 웰라 · ทะเล 탈레)
     for i in range(1, len(syls)):
         on, cl, _, _ = syls[i]
         prev = syls[i - 1]

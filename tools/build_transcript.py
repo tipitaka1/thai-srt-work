@@ -57,7 +57,8 @@ PAIRS = json.load(open(a.pairs, encoding='utf-8'))
 PRON = json.load(open(a.pron, encoding='utf-8'))
 PALI = json.load(open(a.pali, encoding='utf-8')) if a.pali else {}
 PRON.update(PALI)
-TRIE = dict_trie(set(thai_words()) | set(PALI))
+BAD_WORDS = {'วจะ', 'แล้'}   # pythainlp 사전에 든 엉뚱한 낱말 — 'แล้วจะ'를 'แล้|วจะ'로 자름
+TRIE = dict_trie((set(thai_words()) - BAD_WORDS) | set(PALI))
 CHAPTERS = [(int(x.split(':', 1)[0]), x.split(':', 1)[1]) for x in a.chapters.split('|')]
 
 # ---- 1. 정렬 ----
