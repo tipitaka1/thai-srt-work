@@ -147,6 +147,8 @@ python3 tools/build_transcript.py --paras work/LT1045/paras.json --pairs work/LT
    - 받아쓰기 조각은 일레븐랩스·휘스퍼 어느 쪽이든 `segments[].words[]`에 `start`·`end`가 있으면 됩니다. 본 법문 구간 밖(앞뒤 잡담)은 미리 잘라 내야 정렬이 새지 않습니다.
 4. 받아쓰기 엔진을 고를 때는 `python3 tools/stt_compare.py <녹취록 md> <일레븐랩스 json> <휘스퍼 json> <결과 json>`으로 녹취록 대비 오류율을 봅니다.
 
+법문 하나를 인터넷·서버 없이 열리는 HTML 파일 하나로 묶으려면 `python3 tools/make_offline.py . <id> <출력.html>`(음성·자막·초상을 안에 넣음, 약 10MB)입니다.
+
 공유 카드는 `python3 tools/render_card.py . og/<id>-card.png <id>`로 그립니다(`npm i @fontsource/noto-sans-thai @fontsource/noto-sans-kr`를 `/tmp/claude-0/fonttest`에 받아 둔 글꼴을 넣음).
 
 앱 화면은 `tools/app/core.html`을 고친 뒤 `python3 tools/assemble.py tools/app/core.html .`로 `index.html`과 `s/` 공유 주소를 다시 만듭니다.
