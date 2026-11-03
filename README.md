@@ -5,7 +5,7 @@
 **폰에서 열기:** <https://tipitaka1.github.io/thai-srt-work/>
 홈 화면에 추가하면 앱처럼 열립니다 (안드로이드 크롬: 메뉴 → 홈 화면에 추가 / 아이폰 사파리: 공유 → 홈 화면에 추가).
 
-지금 들어 있는 법문은 아잔 마하부와의 두 편입니다. 맨 위 고르는 칸에서 바꿉니다.
+지금 들어 있는 법문은 아잔 마하부와의 세 편입니다. 맨 위 고르는 칸에서 바꿉니다.
 
 **「번뇌 죽이는 공부(วิชาฆ่ากิเลส)」** 1987년 7월 29일, 당시 73세, 왓빠반땃 스님들에게 — 53분
 - 원본 녹음 107분 가운데 본 법문(원본 11:30~64:36)만 넣었습니다. 앞 11분 반과 뒤 42분은 녹취록에 없는 편한 대화(숲과 짐승 이야기 등)라 뺐습니다.
@@ -13,6 +13,13 @@
 - 한국어 번역은 녹취록 문단마다 옮긴 전문 번역을 태국어 토막과 뜻으로 짝지어 484줄로 나눴습니다. 차례 7개.
 - 한글 독음은 LT2401에서 손본 독음을 먼저 쓰고, 나머지는 발음 사전(tltk)과 같은 규칙으로 만든 뒤 검토했습니다.
 - 더빙은 없습니다. 음성은 Opus 24kbps(webm, 10.9MB)입니다.
+
+**「단식은 어느 단계에서든 나에게 좋았다(อดอาหารนี้ดีทุกขั้นสำหรับเรา)」** 2005년 9월 5일 아침, 당시 92세, 왓빠반땃에서 우돈피타야누꾼 학교 교사·학생들에게 — 39분
+- 원본 녹음 47분 가운데 본 법문(원본 4:28~43:13)만 넣었습니다. 앞 4분 반(인도네시아 박사·녹음기·모금 이야기)과 뒤(축원 염불, 경찰 이야기, 금 모금 보고)는 녹취록에 없는 잡담이라 뺐습니다.
+- 화면의 태국어는 **공식 녹취록**(luangta.com ID 3579, ¶4–42)입니다. 시각은 **일레븐랩스(scribe v2) 받아쓰기의 낱말 시각**에 녹취록 글자를 맞춰 얹었습니다(글자 95% 일치). 휘스퍼보다 일레븐랩스가 이 녹음에서 네 배쯤 정확했습니다(`work/LT3579/stt_compare.md`).
+- 한국어 번역은 녹취록 39문단을 새로 옮겨 태국어 토막과 짝지어 325줄로 나눴습니다(`work/LT3579/talk_ko.txt`). 차례 15개.
+- 한글 독음은 LT1045·LT2401에서 손본 사전을 먼저 쓰고, 없는 낱말은 발음 사전(tltk) 규칙으로 만든 뒤 검토했습니다(`work/LT3579/pron_ko.json`).
+- 더빙은 없습니다. 음성은 Opus 24kbps(webm, 7.7MB)입니다.
 
 **「모든 괴로움 덩어리는 감각 욕망 번뇌에 모여 있다」** 2003년 10월 11일 저녁, 당시 90세, 왓빠반땃 스님들에게 — 21분
 - 본 법문 21분 전체가 들어 있습니다. 원본 녹음 3:35, "내가 이렇게 아파서…"부터가 0:00입니다.
@@ -51,8 +58,9 @@
 | `subtitles/` | 휘스퍼 348줄 전체의 노래방 VTT(1~339줄 독음·번역), 검토용 SRT(`태국어 / 독음 / 번역`, 검토 표시 포함) |
 | `work/LT2401/` | 휘스퍼 원본 SRT, 단어별 시각 JSON, 독음·번역(`pron_ko.txt`, 검토 표시 포함), 태국어 토막(`seg_th.txt`), 문장 나누기와 차례(`talk_ko.txt`) |
 | `work/LT1045/` | 녹취록 문단(태국어 토막·한국어 문장 `paras.json`), 줄 짝(`pairs.json`), 독음 사전(`pron_ko.json`), 빨리어 낱말(`pali.json`) |
+| `work/LT3579/` | 공식 녹취록 사본(`transcript_ID3579.md`), 번역·문장 나누기·차례(`talk_ko.txt` → `paras.json`·`pairs.json`·`chapters.txt`), 독음 사전(`pron_ko.json`), 빨리어·합성어(`pali.json`), 받아쓰기 오류율 비교(`stt_compare.md`), 다시 만들기(`build.sh`) |
 | `tts/requests/` | 제미나이 TTS 요청 (이 폴더에 올리면 Actions가 읽힘) |
-| `tools/` | 자막·음성 만들기 (`build_karaoke.py`), 점검 (`check_lines.py` 독음·토막, `check_reseg.py` 문장 나누기, `take_quality.py` TTS 테이크), 앱 조립 (`app/core.html`, `assemble.py`), 공유 카드 (`render_card.py`), TTS (`tts_gemini.py`), 더빙 (`dub_align.py`, `dub_mix.py`) | · 녹취록 법문은 `build_transcript.py`(녹취록 정렬 `th_align.py`, 한글 독음 `th_hangul.py`)
+| `tools/` | 자막·음성 만들기 (`build_karaoke.py`), 점검 (`check_lines.py` 독음·토막, `check_reseg.py` 문장 나누기, `take_quality.py` TTS 테이크), 앱 조립 (`app/core.html`, `assemble.py`), 공유 카드 (`render_card.py`), TTS (`tts_gemini.py`), 더빙 (`dub_align.py`, `dub_mix.py`) | · 녹취록 법문은 `build_transcript.py`(녹취록 정렬 `th_align.py`, 한글 독음 `th_hangul.py`), 번역 파일 → 입력 변환 `talk_to_pairs.py`, 받아쓰기 오류율 `stt_compare.py`
 
 TTS로 만든 원음(테이크)은 `tts-work` 가지에 따로 모아 둡니다.
 
@@ -130,6 +138,16 @@ python3 tools/build_transcript.py --paras work/LT1045/paras.json --pairs work/LT
 - `pairs.json`: 문단마다 `[한국어 첫 문장, 끝 문장, 태국어 첫 토막, 끝 토막]`(1부터, 끝 포함). 2초가 안 되는 줄은 같은 문단 이웃과 합칩니다.
 - 음성: `ffmpeg -ss 690 -to 3876 -i <원본> -ac 1 -ar 48000 -c:a libopus -b:a 24k -f webm media/LT1045_talk.webm` (앞뒤 0.3·0.6초 소리 키우기·줄이기)
 - pythainlp, tltk(발음 사전, gensim 없이 씀)가 필요합니다.
+
+녹취록이 있는 법문, 번역을 줄 단위로 쓰는 방식(LT3579):
+
+1. `work/<ID>/talk_ko.txt`에 문단마다 `## ¶N` 아래 `첫토막-끝토막|번역` 줄을 씁니다(토막은 녹취록의 빈칸 단위, 1부터). `# 제목` 줄은 다음 문단에서 시작하는 차례입니다.
+2. `python3 tools/talk_to_pairs.py --md <녹취록 md> --talk work/<ID>/talk_ko.txt --first-line <본문 첫 줄> --last-line <끝 줄> --out-dir work/<ID>` → `paras.json`·`pairs.json`·`chapters.txt`. 토막이 빠지거나 겹치면 알려 줍니다.
+3. `build_transcript.py`를 `--ssw <받아쓰기 조각 json> --engine "일레븐랩스 scribe v2 받아쓰기(낱말 시각)" --bad-words <엉뚱하게 잘리는 낱말>`로 돌립니다. 전체 명령은 `work/LT3579/build.sh`.
+   - 받아쓰기 조각은 일레븐랩스·휘스퍼 어느 쪽이든 `segments[].words[]`에 `start`·`end`가 있으면 됩니다. 본 법문 구간 밖(앞뒤 잡담)은 미리 잘라 내야 정렬이 새지 않습니다.
+4. 받아쓰기 엔진을 고를 때는 `python3 tools/stt_compare.py <녹취록 md> <일레븐랩스 json> <휘스퍼 json> <결과 json>`으로 녹취록 대비 오류율을 봅니다.
+
+공유 카드는 `python3 tools/render_card.py . og/<id>-card.png <id>`로 그립니다(`npm i @fontsource/noto-sans-thai @fontsource/noto-sans-kr`를 `/tmp/claude-0/fonttest`에 받아 둔 글꼴을 넣음).
 
 앱 화면은 `tools/app/core.html`을 고친 뒤 `python3 tools/assemble.py tools/app/core.html .`로 `index.html`과 `s/` 공유 주소를 다시 만듭니다.
 

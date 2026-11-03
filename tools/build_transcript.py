@@ -39,12 +39,14 @@ ap.add_argument('--paras', required=True)
 ap.add_argument('--pairs', required=True)
 ap.add_argument('--pron', required=True)
 ap.add_argument('--pali', help='통째로 한 낱말로 둘 빨리어 등 {낱말: 한글} (독음 사전보다 앞섬)')
+ap.add_argument('--bad-words', default='', help='pythainlp 사전에서 뺄 낱말(쉼표로 이음) — 엉뚱하게 잘리는 것 (예: มีนา → มี นา)')
 ap.add_argument('--ssw', required=True)
 ap.add_argument('--audio', required=True)
 ap.add_argument('--cut', nargs=2, type=float, required=True)
 ap.add_argument('--chapters', required=True)
 ap.add_argument('--name', required=True, help='VTT 머리말에 적을 이름 (예: "LT1045 (1987-07-29) ...")')
 ap.add_argument('--source', default='')
+ap.add_argument('--engine', default='휘스퍼 large-v3 받아쓰기', help='VTT 머리말에 적을 시각 출처 (예: 일레븐랩스 scribe v2 받아쓰기)')
 ap.add_argument('--min-cue', type=float, default=2.0)
 ap.add_argument('--out-vtt', required=True)
 ap.add_argument('--out-json', required=True)
@@ -57,7 +59,7 @@ PAIRS = json.load(open(a.pairs, encoding='utf-8'))
 PRON = json.load(open(a.pron, encoding='utf-8'))
 PALI = json.load(open(a.pali, encoding='utf-8')) if a.pali else {}
 PRON.update(PALI)
-BAD_WORDS = {'วจะ', 'แล้'}   # pythainlp 사전에 든 엉뚱한 낱말 — 'แล้วจะ'를 'แล้|วจะ'로 자름
+BAD_WORDS = {'วจะ', 'แล้'} | {w for w in a.bad_words.split(',') if w}   # pythainlp 사전에 든 엉뚱한 낱말 — 'แล้วจะ'를 'แล้|วจะ'로 자름
 TRIE = dict_trie((set(thai_words()) - BAD_WORDS) | set(PALI))
 CHAPTERS = [(int(x.split(':', 1)[0]), x.split(':', 1)[1]) for x in a.chapters.split('|')]
 
@@ -183,7 +185,7 @@ def words_of(k, text, base):
 
 
 def pron(w):
-    th = w['th'].replace(' ', '')
+    th = w['th'].replace(' ', '').strip('.…?!,"\'()[]')   # 낱말에 붙은 문장부호는 떼고 찾는다 (พ้นทุกข์... · ๑.)
     h = PRON.get(th.rstrip('ๆ'), '')
     return h + h if (th.endswith('ๆ') and h) else h   # ๆ 는 앞말을 한 번 더 (LT2401: จริงๆ 찡찡)
 
@@ -302,7 +304,7 @@ Language: th
 
 NOTE
 {a.name}
-태국어는 공식 녹취록 글이고, 시각은 휘스퍼 large-v3 받아쓰기에 녹취록 글자를 맞춰 얹은 값입니다(글자 {match_pct:.0f}% 일치, 안 맞은 글자는 앞뒤 사이를 나눈 추정).
+태국어는 공식 녹취록 글이고, 시각은 {a.engine}에 녹취록 글자를 맞춰 얹은 값입니다(글자 {match_pct:.0f}% 일치, 안 맞은 글자는 앞뒤 사이를 나눈 추정).
 태국어 단어마다 <ruby>태국어<rt>한글 독음</rt></ruby>, 둘째 줄 <c.ko>는 한국어 번역입니다. 단어 앞뒤에 0.12초 넘게 붙은 무음은 음성 크기로 잘라 냈습니다.
 잘라 낸 구간: 원본 {fmt(CUT0)} ~ {fmt(CUT1)} (시각은 잘라 낸 음성 기준 0초부터).
 
